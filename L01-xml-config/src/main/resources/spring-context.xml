@@ -4,7 +4,24 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="questionsDao" class="ru.chupaYchups.question.core.dao.QuestionsDao">
-        <constructor-arg name="fileName" value="questions.csv"/>
+    <bean id="resourceFileScannerService" class="ru.chupaYchups.question.file.ResourceFileScannerService">
+        <constructor-arg name="resourceFileName" value="questions.csv"/>
     </bean>
+
+    <bean id="questionConverterService" class="ru.chupaYchups.question.core.service.QuestionConverterServiceImpl"/>
+
+    <bean id="questionsDao" class="ru.chupaYchups.question.file.ResourceFileQuestionsDao">
+        <constructor-arg name="resourceFileScannerService" ref="resourceFileScannerService"/>
+        <constructor-arg name="converterService" ref="questionConverterService"/>
+    </bean>
+
+    <bean id="printerService" class="ru.chupaYchups.question.output.PrinterService">
+        <constructor-arg name="printStream" value="#{T(java.lang.System).out}"/>
+    </bean>
+
+    <bean id="questionManagerService" class="ru.chupaYchups.question.QuestionManagerServiceImpl">
+        <constructor-arg name="questionsDao" ref="questionsDao"/>
+        <constructor-arg name="printerService" ref="printerService"/>
+    </bean>
+
 </beans>

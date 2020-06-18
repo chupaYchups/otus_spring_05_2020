@@ -2,8 +2,8 @@ package ru.chupaYchups.question;
 
 public class Question {
 
-    private String questionString;
-    private String answerString;
+    private final String questionString;
+    private final String answerString;
     private final String QUESTION_MARK = "?";
 
     public Question(String questionString, String answerString) {
