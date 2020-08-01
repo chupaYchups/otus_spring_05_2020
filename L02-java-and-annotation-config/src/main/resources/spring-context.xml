@@ -15,13 +15,18 @@
         <constructor-arg name="converterService" ref="questionConverterService"/>
     </bean>
 
-    <bean id="printerService" class="ru.chupaYchups.question.output.PrinterService">
+    <bean id="printerService" class="ru.chupaYchups.question.output.QuestionOutputServiceImpl">
         <constructor-arg name="printStream" value="#{T(java.lang.System).out}"/>
+    </bean>
+
+    <bean id="inputService" class="ru.chupaYchups.question.output.InputService">
+        <constructor-arg name="inputStream" value="#{T(java.lang.System).in}"/>
     </bean>
 
     <bean id="questionManagerService" class="ru.chupaYchups.question.QuestionManagerServiceImpl">
         <constructor-arg name="questionsDao" ref="questionsDao"/>
         <constructor-arg name="printerService" ref="printerService"/>
+        <constructor-arg name="inputService" ref="inputService"/>
     </bean>
 
 </beans>
