@@ -11,7 +11,7 @@ public class QuestionOutputServiceImpl implements QuestionOutputService {
     public static final String TEST_SUCCESS_OUTPUT = "Test is successfully finished! Congratulations!";
     public static final String TEST_FAILED_OUTPUT = "Test is failed! Try again please!";
 
-    private PrintStream printStream;
+    private final PrintStream printStream;
 
     public QuestionOutputServiceImpl(@Value("#{T(java.lang.System).out}")PrintStream printStream) {
         this.printStream = printStream;
