@@ -1,13 +1,17 @@
-package ru.chupaYchups.question.file;
+package ru.chupaYchups.question.file.dao;
 
-import ru.chupaYchups.question.Question;
+import org.springframework.stereotype.Repository;
 import ru.chupaYchups.question.core.dao.QuestionsDao;
+import ru.chupaYchups.question.core.model.Question;
 import ru.chupaYchups.question.core.service.QuestionConverterService;
-import ru.chupaYchups.question.exception.QuestionException;
+import ru.chupaYchups.question.core.exception.QuestionException;
+import ru.chupaYchups.question.file.service.ResourceFileScannerService;
+
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Scanner;
 
+@Repository
 public class ResourceFileQuestionsDao implements QuestionsDao {
 
     private Queue<Question> questionQueue;

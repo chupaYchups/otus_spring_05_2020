@@ -1,17 +1,18 @@
-package ru.chupaYchups.question;
+package ru.chupaYchups.question.core.service;
 
+import org.springframework.stereotype.Service;
 import ru.chupaYchups.question.core.dao.QuestionsDao;
-import ru.chupaYchups.question.core.service.QuestionInputService;
-import ru.chupaYchups.question.core.service.QuestionManagerService;
-import ru.chupaYchups.question.core.service.QuestionOutputService;
+import ru.chupaYchups.question.core.model.Question;
 
-public class QuestionManagerServiceImpl implements QuestionManagerService {
+
+@Service
+public class TestManagerServiceImpl implements TestManagerService {
 
     private QuestionsDao dao;
     private QuestionOutputService questionOutputService;
     private QuestionInputService questionInputService;
 
-    public QuestionManagerServiceImpl(QuestionsDao questionsDao, QuestionOutputService printerService, QuestionInputService inputService) {
+    public TestManagerServiceImpl(QuestionsDao questionsDao, QuestionOutputService printerService, QuestionInputService inputService) {
         this.dao = questionsDao;
         this.questionOutputService = printerService;
         this.questionInputService = inputService;

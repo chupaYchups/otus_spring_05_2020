@@ -1,15 +1,17 @@
-package ru.chupaYchups.question.output;
+package ru.chupaYchups.question.core.service;
 
-import ru.chupaYchups.question.core.service.QuestionInputService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.Scanner;
 
+@Service
 public class QuestionInputServiceImpl implements QuestionInputService {
 
     private Scanner scanner;
 
-    public QuestionInputServiceImpl(InputStream inputStream)  {
+    public QuestionInputServiceImpl(@Value("#{T(java.lang.System).in}")InputStream inputStream)  {
         this.scanner = new Scanner(inputStream);
     }
 

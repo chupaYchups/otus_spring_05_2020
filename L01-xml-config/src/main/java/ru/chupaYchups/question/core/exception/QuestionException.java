@@ -1,4 +1,4 @@
-package ru.chupaYchups.question.exception;
+package ru.chupaYchups.question.core.exception;
 
 public class QuestionException extends RuntimeException {
     public QuestionException(String message) {

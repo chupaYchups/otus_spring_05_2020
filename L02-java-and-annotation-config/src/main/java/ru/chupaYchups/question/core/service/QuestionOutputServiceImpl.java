@@ -1,9 +1,11 @@
-package ru.chupaYchups.question.output;
+package ru.chupaYchups.question.core.service;
 
-import ru.chupaYchups.question.Question;
-import ru.chupaYchups.question.core.service.QuestionOutputService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import ru.chupaYchups.question.core.model.Question;
 import java.io.PrintStream;
 
+@Service
 public class QuestionOutputServiceImpl implements QuestionOutputService {
 
     public static final String TEST_SUCCESS_OUTPUT = "Test is successfully finished! Congratulations!";
@@ -11,7 +13,7 @@ public class QuestionOutputServiceImpl implements QuestionOutputService {
 
     private PrintStream printStream;
 
-    public QuestionOutputServiceImpl(PrintStream printStream) {
+    public QuestionOutputServiceImpl(@Value("#{T(java.lang.System).out}")PrintStream printStream) {
         this.printStream = printStream;
     }
 

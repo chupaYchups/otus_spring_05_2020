@@ -3,7 +3,7 @@ package ru.chupaYchups.question.file;
 import ru.chupaYchups.question.Question;
 import ru.chupaYchups.question.core.dao.QuestionsDao;
 import ru.chupaYchups.question.core.service.QuestionConverterService;
-import ru.chupaYchups.question.exception.QuestionException;
+import ru.chupaYchups.question.core.exception.QuestionException;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Scanner;

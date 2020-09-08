@@ -1,4 +1,4 @@
-package ru.chupaYchups.question;
+package ru.chupaYchups.question.core.model;
 
 public class Question {
 

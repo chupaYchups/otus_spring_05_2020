@@ -1,6 +1,6 @@
 package ru.chupaYchups.question.core.service;
 
-public interface QuestionManagerService {
+public interface TestManagerService {
 
     void printAllQuestions();
 
