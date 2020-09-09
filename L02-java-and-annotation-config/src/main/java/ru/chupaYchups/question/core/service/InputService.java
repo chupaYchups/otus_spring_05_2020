@@ -1,5 +1,5 @@
 package ru.chupaYchups.question.core.service;
 
-public interface QuestionInputService {
+public interface InputService {
     String getInput();
 }

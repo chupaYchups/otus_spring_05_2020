@@ -18,7 +18,4 @@ public class Question {
     public String getQuestionString() {
         return questionString + QUESTION_MARK;
     }
-    public String getAnswerString() {
-        return answerString;
-    }
 }
