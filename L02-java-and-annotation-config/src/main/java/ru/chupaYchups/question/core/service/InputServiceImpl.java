@@ -1,11 +1,8 @@
 package ru.chupaYchups.question.core.service;
 
-import org.springframework.stereotype.Service;
-
 import java.io.InputStream;
 import java.util.Scanner;
 
-@Service
 public class InputServiceImpl implements InputService {
 
     private Scanner scanner;

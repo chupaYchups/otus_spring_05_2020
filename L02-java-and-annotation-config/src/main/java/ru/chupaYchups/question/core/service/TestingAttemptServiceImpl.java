@@ -5,6 +5,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import ru.chupaYchups.question.core.dao.QuestionsDao;
 import ru.chupaYchups.question.core.model.Question;
+import ru.chupaYchups.question.core.model.Student;
 import ru.chupaYchups.question.core.model.TestingAttempt;
 import java.util.List;
 
@@ -19,8 +20,9 @@ public class TestingAttemptServiceImpl implements TestingAttemptService {
     @Value("${questions.qty.to.success}")
     private int quantityToSuccess;
 
-    private final String SUCCESS_RESULT_PATTERN = "Dear %s, test is completed successfully, result : %d/%d";
-    private final String FAILED_RESULT_PATTERN = "Dear %s, test is failed, result : %d/%d";
+    private final String HELLO_USER_NAME_REQUEST = "Hello student, what is your name?" ;
+    private final String SUCCESS_RESULT_PATTERN = "Dear %s, test is completed successfully, result : %s";
+    private final String FAILED_RESULT_PATTERN = "Dear %s, test is failed! Your result : %s";
 
     public TestingAttemptServiceImpl(QuestionsDao questionsDao, PrintOutputService printOutputService, InputService inputService) {
         this.questionsDao = questionsDao;
@@ -37,12 +39,11 @@ public class TestingAttemptServiceImpl implements TestingAttemptService {
     @Override
     public void doTestingAttempt() {
 
-        final String userName = null;
-        boolean testResultOk = false;
+        printOutputService.print(HELLO_USER_NAME_REQUEST);
+        Student student = new Student(inputService.getInput());
 
         List<Question> questions = questionsDao.findAllQuestion();
-        TestingAttempt testingAttempt = new TestingAttempt(questions, userName, quantityToSuccess);
-
+        TestingAttempt testingAttempt = new TestingAttempt(questions, student, quantityToSuccess);
         while (testingAttempt.isContinued()) {
             Question question = testingAttempt.getNextQuestion();
             printOutputService.print(question.getQuestionString());
@@ -52,6 +53,9 @@ public class TestingAttemptServiceImpl implements TestingAttemptService {
             }
         }
 
-        printOutputService.print(testResultOk ? SUCCESS_RESULT_PATTERN : FAILED_RESULT_PATTERN);
+        printOutputService.print(
+            String.format(testingAttempt.isSuccess() ? SUCCESS_RESULT_PATTERN : FAILED_RESULT_PATTERN,
+                student.getUserName(),
+                testingAttempt.getResult()));
     }
 }

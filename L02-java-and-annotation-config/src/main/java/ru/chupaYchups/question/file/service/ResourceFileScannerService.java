@@ -2,11 +2,12 @@ package ru.chupaYchups.question.file.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Scanner;
 
-@Service
+@Component
 @PropertySource("classpath:application.properties")
 public class ResourceFileScannerService {
 
