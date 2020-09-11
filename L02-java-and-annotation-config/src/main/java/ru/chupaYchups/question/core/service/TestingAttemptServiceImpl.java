@@ -16,18 +16,17 @@ public class TestingAttemptServiceImpl implements TestingAttemptService {
     private final QuestionsDao questionsDao;
     private final PrintOutputService printOutputService;
     private final InputService inputService;
+    private final int quantityToSuccess;
 
-    @Value("${questions.qty.to.success}")
-    private int quantityToSuccess;
+    public static final String HELLO_USER_NAME_REQUEST = "Hello student, what is your name?" ;
+    public static final String SUCCESS_RESULT_PATTERN = "Dear %s, test is completed successfully, result : %s";
+    public static final String FAILED_RESULT_PATTERN = "Dear %s, test is failed! Your result : %s";
 
-    private final String HELLO_USER_NAME_REQUEST = "Hello student, what is your name?" ;
-    private final String SUCCESS_RESULT_PATTERN = "Dear %s, test is completed successfully, result : %s";
-    private final String FAILED_RESULT_PATTERN = "Dear %s, test is failed! Your result : %s";
-
-    public TestingAttemptServiceImpl(QuestionsDao questionsDao, PrintOutputService printOutputService, InputService inputService) {
+    public TestingAttemptServiceImpl(QuestionsDao questionsDao, PrintOutputService printOutputService, InputService inputService, @Value("${questions.qty.to.success}")int quantityToSuccess) {
         this.questionsDao = questionsDao;
         this.printOutputService = printOutputService;
         this.inputService = inputService;
+        this.quantityToSuccess = quantityToSuccess;
     }
 
     @Override

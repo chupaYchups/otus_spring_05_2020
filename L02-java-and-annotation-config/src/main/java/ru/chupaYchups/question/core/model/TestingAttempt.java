@@ -27,7 +27,7 @@ public class TestingAttempt {
         sucessCounter++;
     }
     public boolean isContinued() {
-        return questionIterator.hasNext() && sucessCounter < QTY_TO_SUCCESS;
+        return questionIterator.hasNext();
     }
 
     public Student getStudent() {
