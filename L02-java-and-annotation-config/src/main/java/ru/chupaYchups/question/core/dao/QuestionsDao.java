@@ -4,5 +4,5 @@ import ru.chupaYchups.question.core.model.Question;
 import java.util.List;
 
 public interface QuestionsDao {
-    List<Question> findAllQuestion();
+    List<Question> findAllQuestions();
 }

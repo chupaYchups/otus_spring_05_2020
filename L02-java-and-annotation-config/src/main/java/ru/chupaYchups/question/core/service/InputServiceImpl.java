@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class InputServiceImpl implements InputService {
 
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public InputServiceImpl(InputStream inputStream)  {
         this.scanner = new Scanner(inputStream);

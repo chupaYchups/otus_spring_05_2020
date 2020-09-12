@@ -5,7 +5,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import ru.chupaYchups.question.core.service.TestingAttemptService;
 
-
 @ComponentScan
 @Configuration
 public class Main {

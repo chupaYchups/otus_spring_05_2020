@@ -5,8 +5,8 @@ import java.util.List;
 
 public class TestingAttempt {
 
-    private final int QTY_TO_SUCCESS;
-    private final int QUESTIONS_QTY;
+    private final int qtyToSuccess;
+    private final int qtyOfQuestions;
 
     private final Iterator<Question> questionIterator;
     private final Student student;
@@ -16,10 +16,11 @@ public class TestingAttempt {
     public TestingAttempt(List<Question> questionList, Student student, int qtyToSuccess) {
         this.sucessCounter = 0;
         this.questionIterator = questionList.iterator();
-        this.QUESTIONS_QTY = questionList.size();
-        this.QTY_TO_SUCCESS = qtyToSuccess;
+        this.qtyOfQuestions = questionList.size();
+        this.qtyToSuccess = qtyToSuccess;
         this.student = student;
     }
+
     public Question getNextQuestion() {
         return questionIterator.next();
     }
@@ -35,10 +36,10 @@ public class TestingAttempt {
     }
 
     public String getResult() {
-        return sucessCounter + "/" + QUESTIONS_QTY;
+        return sucessCounter + "/" + qtyOfQuestions;
     }
 
     public boolean isSuccess() {
-        return !isContinued() && sucessCounter >= QTY_TO_SUCCESS;
+        return !isContinued() && sucessCounter >= qtyToSuccess;
     }
 }

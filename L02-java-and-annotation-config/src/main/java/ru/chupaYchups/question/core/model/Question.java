@@ -4,7 +4,8 @@ public class Question {
 
     private final String questionString;
     private final String answerString;
-    private final String QUESTION_MARK = "?";
+
+    public final static String QUESTION_MARK = "?";
 
     public Question(String questionString, String answerString) {
         this.questionString = questionString;

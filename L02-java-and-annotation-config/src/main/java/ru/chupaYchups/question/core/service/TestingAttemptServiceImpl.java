@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import ru.chupaYchups.question.core.dao.QuestionsDao;
+import ru.chupaYchups.question.core.exception.QuestionException;
 import ru.chupaYchups.question.core.model.Question;
 import ru.chupaYchups.question.core.model.Student;
 import ru.chupaYchups.question.core.model.TestingAttempt;
@@ -31,30 +32,39 @@ public class TestingAttemptServiceImpl implements TestingAttemptService {
 
     @Override
     public void printAllQuestions() {
-        List<Question> questions = questionsDao.findAllQuestion();
-        questions.forEach(q -> printOutputService.print(q.getQuestionString()));
+        try {
+            List<Question> questions = questionsDao.findAllQuestions();
+            questions.forEach(q -> printOutputService.print(q.getQuestionString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new QuestionException("Error while print all questions");
+        }
     }
 
     @Override
     public void doTestingAttempt() {
+        try {
+            printOutputService.print(HELLO_USER_NAME_REQUEST);
+            Student student = new Student(inputService.getInput());
 
-        printOutputService.print(HELLO_USER_NAME_REQUEST);
-        Student student = new Student(inputService.getInput());
-
-        List<Question> questions = questionsDao.findAllQuestion();
-        TestingAttempt testingAttempt = new TestingAttempt(questions, student, quantityToSuccess);
-        while (testingAttempt.isContinued()) {
-            Question question = testingAttempt.getNextQuestion();
-            printOutputService.print(question.getQuestionString());
-            String answer = inputService.getInput();
-            if (question.checkAnswer(answer)) {
-                testingAttempt.incrementSuccessCounter();
+            List<Question> questions = questionsDao.findAllQuestions();
+            TestingAttempt testingAttempt = new TestingAttempt(questions, student, quantityToSuccess);
+            while (testingAttempt.isContinued()) {
+                Question question = testingAttempt.getNextQuestion();
+                printOutputService.print(question.getQuestionString());
+                String answer = inputService.getInput();
+                if (question.checkAnswer(answer)) {
+                    testingAttempt.incrementSuccessCounter();
+                }
             }
-        }
 
-        printOutputService.print(
-            String.format(testingAttempt.isSuccess() ? SUCCESS_RESULT_PATTERN : FAILED_RESULT_PATTERN,
-                student.getUserName(),
-                testingAttempt.getResult()));
+            printOutputService.print(
+                String.format(testingAttempt.isSuccess() ? SUCCESS_RESULT_PATTERN : FAILED_RESULT_PATTERN,
+                    student.getUserName(),
+                    testingAttempt.getResult()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new QuestionException("Error while do testing attempt");
+        }
     }
 }

@@ -1,9 +1,9 @@
-package ru.chupaYchups.question.file.dao;
+package ru.chupaYchups.question.core.component;
 
 import org.springframework.stereotype.Component;
 import ru.chupaYchups.question.core.model.Question;
 
 @Component
-public interface QuestionConverterService {
+public interface StringToQuestionConverter {
     Question covertToQuestion(String oneLineString);
 }

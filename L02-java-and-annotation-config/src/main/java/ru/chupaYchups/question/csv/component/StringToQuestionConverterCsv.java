@@ -1,10 +1,11 @@
-package ru.chupaYchups.question.file.dao;
+package ru.chupaYchups.question.csv.component;
 
 import org.springframework.stereotype.Component;
+import ru.chupaYchups.question.core.component.StringToQuestionConverter;
 import ru.chupaYchups.question.core.model.Question;
 
 @Component
-public class QuestionConverterServiceImpl implements QuestionConverterService {
+public class StringToQuestionConverterCsv implements StringToQuestionConverter {
     @Override
     public Question covertToQuestion(String oneLineString) {
         String[] questionAndAnswer = oneLineString.split(";");
