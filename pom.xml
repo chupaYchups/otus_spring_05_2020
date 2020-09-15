@@ -17,6 +17,7 @@
 
     <modules>
         <module>L01-xml-config</module>
+        <module>L02-java-and-annotation-config</module>
     </modules>
 
     <dependencies>
