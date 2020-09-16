@@ -1,0 +1,6 @@
+application:
+  locale : en_En
+
+testing:
+  sucess-qty : 3
+  file-name : questions.csv
