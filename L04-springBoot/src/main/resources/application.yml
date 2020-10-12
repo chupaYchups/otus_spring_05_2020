@@ -1,6 +1,9 @@
 application:
-  locale : en_En
+  locale : ru
+
+file:
+    name-property: questions
+    extension: csv
 
 testing:
   sucess-qty : 3
-  file-name : questions.csv
