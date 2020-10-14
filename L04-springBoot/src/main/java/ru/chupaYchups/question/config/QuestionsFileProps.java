@@ -7,6 +7,7 @@ public class QuestionsFileProps {
 
     private String nameProperty;
     private String extension;
+    private String delimiter;
 
     public String getNameProperty() {
         return nameProperty;
@@ -22,5 +23,13 @@ public class QuestionsFileProps {
 
     public void setExtension(String extension) {
         this.extension = extension;
+    }
+
+    public String getDelimiter() {
+        return delimiter;
+    }
+
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
     }
 }

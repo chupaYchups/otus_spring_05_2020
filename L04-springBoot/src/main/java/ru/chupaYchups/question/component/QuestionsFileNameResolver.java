@@ -12,10 +12,10 @@ public class QuestionsFileNameResolver {
     private final QuestionsFileProps questionsFileProps;
     private final ApplicationProps applicationProps;
 
-    public QuestionsFileNameResolver(MessageSource messageSource, QuestionsFileProps questionsFileProps, ApplicationProps applicationProps1) {
+    public QuestionsFileNameResolver(MessageSource messageSource, QuestionsFileProps questionsFileProps, ApplicationProps applicationProps) {
         this.messageSource = messageSource;
         this.questionsFileProps = questionsFileProps;
-        this.applicationProps = applicationProps1;
+        this.applicationProps = applicationProps;
     }
 
     public String getFileName() {

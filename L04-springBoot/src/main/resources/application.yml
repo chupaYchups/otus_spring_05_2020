@@ -1,9 +1,10 @@
 application:
-  locale : ru
+  locale : RU
 
 file:
     name-property: questions
     extension: csv
+    delimiter: ;
 
 testing:
   sucess-qty : 3
