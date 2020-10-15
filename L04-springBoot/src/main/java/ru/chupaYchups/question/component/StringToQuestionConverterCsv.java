@@ -14,7 +14,7 @@ public class StringToQuestionConverterCsv implements StringToQuestionConverter {
     }
 
     @Override
-    public Question covertToQuestion(String oneLineString) {
+    public Question convertToQuestion(String oneLineString) {
         String[] questionAndAnswer = oneLineString.split(questionsFileProps.getDelimiter());
         return new Question(questionAndAnswer[0], questionAndAnswer[1]);
     }

@@ -11,10 +11,10 @@ public class TestingAttempt {
     private final Iterator<Question> questionIterator;
     private final Student student;
 
-    private int sucessCounter;
+    private int successCounter;
 
     public TestingAttempt(List<Question> questionList, Student student, int qtyToSuccess) {
-        this.sucessCounter = 0;
+        this.successCounter = 0;
         this.questionIterator = questionList.iterator();
         this.qtyOfQuestions = questionList.size();
         this.qtyToSuccess = qtyToSuccess;
@@ -26,7 +26,7 @@ public class TestingAttempt {
     }
 
     public void incrementSuccessCounter() {
-        sucessCounter++;
+        successCounter++;
     }
 
     public boolean isContinued() {
@@ -38,10 +38,10 @@ public class TestingAttempt {
     }
 
     public String getResult() {
-        return sucessCounter + "/" + qtyOfQuestions;
+        return successCounter + "/" + qtyOfQuestions;
     }
 
     public boolean isSuccess() {
-        return !isContinued() && sucessCounter >= qtyToSuccess;
+        return !isContinued() && successCounter >= qtyToSuccess;
     }
 }

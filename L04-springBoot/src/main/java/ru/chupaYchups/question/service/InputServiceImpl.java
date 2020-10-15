@@ -5,14 +5,18 @@ import java.util.Scanner;
 
 public class InputServiceImpl implements InputService {
 
-    private final Scanner scanner;
+    private final InputStream inputStream;
+    private Scanner scanner;
 
     public InputServiceImpl(InputStream inputStream)  {
-        this.scanner = new Scanner(inputStream);
+        this.inputStream = inputStream;
     }
 
     @Override
     public String getInput() {
+        if (scanner == null) {
+            scanner = new Scanner(inputStream);
+        }
         if(scanner.hasNext()) {
             return scanner.next();
         }

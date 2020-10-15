@@ -3,5 +3,5 @@ package ru.chupaYchups.question.component;
 import ru.chupaYchups.question.model.Question;
 
 public interface StringToQuestionConverter {
-    Question covertToQuestion(String oneLineString);
+    Question convertToQuestion(String oneLineString);
 }
