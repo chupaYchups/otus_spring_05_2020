@@ -8,16 +8,12 @@ import java.util.Scanner;
 public class ResourceFileScanner {
 
     private final QuestionsFileNameResolver questionsFileNameResolver;
-    private Scanner scanner;
 
     public ResourceFileScanner(QuestionsFileNameResolver questionsFileNameResolver) {
         this.questionsFileNameResolver = questionsFileNameResolver;
     }
 
     public Scanner getScanner() {
-        if (scanner == null) {
-            scanner = new Scanner(getClass().getClassLoader().getResourceAsStream(questionsFileNameResolver.getFileName()));
-        }
-        return scanner;
+        return new Scanner(getClass().getClassLoader().getResourceAsStream(questionsFileNameResolver.getFileName()));
     }
 }
