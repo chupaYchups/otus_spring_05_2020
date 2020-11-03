@@ -17,6 +17,7 @@
 
     <modules>
         <module>L01-xml-config</module>
+        <module>L07-jdbc</module>
     </modules>
 
     <dependencies>
