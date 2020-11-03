@@ -17,6 +17,8 @@
 
     <modules>
         <module>L01-xml-config</module>
+        <module>L02-java-and-annotation-config</module>
+        <module>L04-springBoot</module>
         <module>L07-jdbc</module>
     </modules>
 
