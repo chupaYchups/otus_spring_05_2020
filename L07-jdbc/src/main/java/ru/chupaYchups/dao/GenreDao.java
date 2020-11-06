@@ -1,8 +1,8 @@
-package ru.chupaYchups.repositories;
+package ru.chupaYchups.dao;
 
 import ru.chupaYchups.domain.Genre;
 
-public interface GenreRepository {
+public interface GenreDao {
 
     void insert(Genre genre);
 

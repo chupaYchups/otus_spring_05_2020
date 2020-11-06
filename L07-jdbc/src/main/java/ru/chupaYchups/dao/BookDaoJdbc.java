@@ -1,8 +1,8 @@
-package ru.chupaYchups.repositories;
+package ru.chupaYchups.dao;
 
 import ru.chupaYchups.domain.Book;
 
-public class BookRepositoryJdbc implements BookRepository {
+public class BookDaoJdbc implements BookDao {
     @Override
     public void insert(Book book) {
 

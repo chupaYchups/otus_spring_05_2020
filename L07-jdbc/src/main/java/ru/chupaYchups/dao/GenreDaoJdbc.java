@@ -1,8 +1,8 @@
-package ru.chupaYchups.repositories;
+package ru.chupaYchups.dao;
 
 import ru.chupaYchups.domain.Genre;
 
-public class GenreRepositoryJdbc implements GenreRepository {
+public class GenreDaoJdbc implements GenreDao {
     @Override
     public void insert(Genre genre) {
 

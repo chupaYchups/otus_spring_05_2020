@@ -1,9 +1,9 @@
-package ru.chupaYchups.repositories;
+package ru.chupaYchups.dao;
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.chupaYchups.domain.Author;
 
-public class AuthorRepositoryJdbc implements AuthorRepository {
+public class AuthorDaoJdbc implements AuthorDao {
 
     private NamedParameterJdbcOperations jdbcOperations;
 

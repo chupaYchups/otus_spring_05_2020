@@ -1,8 +1,8 @@
-package ru.chupaYchups.repositories;
+package ru.chupaYchups.dao;
 
 import ru.chupaYchups.domain.Author;
 
-public interface AuthorRepository {
+public interface AuthorDao {
 
     void insert(Author author);
 
