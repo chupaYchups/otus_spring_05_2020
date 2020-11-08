@@ -1,14 +1,17 @@
 package ru.chupaYchups.dao;
 
 import ru.chupaYchups.domain.Author;
+import ru.chupaYchups.domain.Genre;
 
 public interface AuthorDao {
 
-    void insert(Author author);
+    long insert(Author author);
 
     Author findById(Long id);
 
-    void delete(Author author);
+    Author findByName(String name);
+
+    void deleteById(Long id);
 
     void update(Author author);
 }

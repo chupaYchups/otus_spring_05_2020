@@ -1,14 +1,13 @@
 package ru.chupaYchups.domain;
 
 import lombok.Data;
-
 import java.util.Date;
 
 @Data
 public class Book {
-    private Long id;
-    private Date publishDate;
-    private String bookName;
-    private Author author;
-    private Genre genre;
+    private final Long id;
+    private final Date publishDate;
+    private final String name;
+    private final Author author;
+    private final Genre genre;
 }

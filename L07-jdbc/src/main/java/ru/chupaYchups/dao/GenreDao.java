@@ -4,11 +4,13 @@ import ru.chupaYchups.domain.Genre;
 
 public interface GenreDao {
 
-    void insert(Genre genre);
+    long insert(Genre genre);
 
     Genre findById(Long id);
 
-    void delete(Genre book);
+    Genre findByName(String name);
+
+    void delete(Long id);
 
     void update(Genre book);
 }

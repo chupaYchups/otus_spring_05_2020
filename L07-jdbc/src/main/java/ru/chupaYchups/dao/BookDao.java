@@ -2,13 +2,17 @@ package ru.chupaYchups.dao;
 
 import ru.chupaYchups.domain.Book;
 
+import java.util.List;
+
 public interface BookDao {
 
-    void insert(Book book);
+    long insert(Book book);
 
     Book findById(Long id);
 
-    void delete(Book book);
+    void deleteById(Long id);
 
     void update(Book book);
+
+    List<Book> getAll();
 }
