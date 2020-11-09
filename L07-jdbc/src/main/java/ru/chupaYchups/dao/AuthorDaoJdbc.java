@@ -7,12 +7,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.chupaYchups.domain.Author;
-import ru.chupaYchups.domain.Book;
-import ru.chupaYchups.domain.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("SqlResolve")
@@ -64,5 +62,10 @@ public class AuthorDaoJdbc implements AuthorDao {
     public void update(Author author) {
         jdbcOperations.update("update author a set a.name = :name",
             Map.of("id", author.getId(), "name", author.getName()));
+    }
+
+    @Override
+    public List<Author> getAll() {
+        return jdbcOperations.query("select a.id, a.name from author a", new AuthorRowMapper());
     }
 }

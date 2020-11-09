@@ -1,7 +1,5 @@
 package ru.chupaYchups.dao;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -12,7 +10,6 @@ import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 
-import javax.validation.constraints.NotNull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -97,15 +94,19 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public List<Book> getByAuthorAndGenre(Optional<Long> authorIdOptional, Optional<Long> genreIdOptional) {
+    public List<Book> getByAuthorAndGenre(Optional<Author> authorOptional, Optional<Genre> genreOptional) {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
-        sqlParameterSource.addValue("authorId", authorIdOptional.orElse(null));
-        sqlParameterSource.addValue("genreId", genreIdOptional.orElse(null));
+        sqlParameterSource.addValue("authorId", authorOptional.map(author -> author.getId()).orElse(null));
+        sqlParameterSource.addValue("genreId", genreOptional.map(genre -> genre.getId()).orElse(null));
         return jdbcOperations.query("select " +
                 "b.id, b.publish_date, b.name, " +
                 "b.author_id, b.genre_id, " +
                 "a.name author_name, g.name genre_name  from book b " +
-                "inner join author a on b.author_id = nvl(:authorId, b.author_id)" +
-                "inner join genre g on b.genre_id = nvl(:genreId, b.genre_id)", sqlParameterSource, new BookRowMapper());
+                "inner join author a on b.author_id = a.id " +
+                "inner join genre g on b.genre_id = g.id " +
+                "where a.id = nvl(:authorId, a.id)" +
+                "and g.id = nvl(:genreId, g.id)",
+                sqlParameterSource,
+                new BookRowMapper());
     }
 }

@@ -1,7 +1,8 @@
 package ru.chupaYchups.dao;
 
 import ru.chupaYchups.domain.Author;
-import ru.chupaYchups.domain.Genre;
+
+import java.util.List;
 
 public interface AuthorDao {
 
@@ -14,4 +15,6 @@ public interface AuthorDao {
     void deleteById(Long id);
 
     void update(Author author);
+
+    List<Author> getAll();
 }

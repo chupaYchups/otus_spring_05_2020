@@ -6,9 +6,13 @@ import org.springframework.stereotype.Service;
 import ru.chupaYchups.dao.AuthorDao;
 import ru.chupaYchups.dao.BookDao;
 import ru.chupaYchups.dao.GenreDao;
-import ru.chupaYchups.domain.Book;
+import ru.chupaYchups.domain.Author;
+import ru.chupaYchups.domain.Genre;
+import ru.chupaYchups.dto.BookDto;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,27 +23,27 @@ public class BookServiceImpl implements BookService {
     private final GenreDao genreDao;
 
     @Override
-    public List<Book> getAllBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional) {
-        Optional<Long> authorIdOptional = Optional.empty();
-        Optional<Long> genreIdOptional = Optional.empty();
-        try {
-            authorIdOptional = authorNameOptional.isPresent() ?
-                    authorNameOptional.map(authorName -> authorDao.findByName(authorName).getId()) :
-                    Optional.empty();
-        } catch (DataAccessException dae) {
-            authorNameOptional.ifPresent(s -> {
-                throw new IllegalArgumentException("Cannot find author with name : " + s, dae);
-            });
-        }
-        try {
-            genreIdOptional = genreNameOptional.isPresent() ?
-                    genreNameOptional.map(authorName -> authorDao.findByName(authorName).getId()) :
-                    Optional.empty();
-        } catch (DataAccessException dae) {
-            genreNameOptional.ifPresent(s -> {
-                throw new IllegalArgumentException("Cannot find genre with name : " + s, dae);
-            });
-        }
-        return bookDao.getByAuthorAndGenre(authorIdOptional, genreIdOptional);
+    public List<BookDto> getAllBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional, Optional<String> nameOptional) {
+
+        Optional<Author> authorOptional = authorNameOptional.map(authorName -> {
+            try {
+                return authorDao.findByName(authorName);
+            } catch (DataAccessException dae) {
+                throw new IllegalArgumentException("Cannot find author with name : " + authorName, dae);
+            }
+        });
+
+        Optional<Genre> genreOptional = genreNameOptional.map(genreName -> {
+            try {
+                return genreDao.findByName(genreName);
+            } catch (DataAccessException dae) {
+                throw new IllegalArgumentException("Cannot find genre with name : " + genreName, dae);
+            }
+        });
+
+        return bookDao.getByAuthorAndGenre(authorOptional, genreOptional).
+            stream().
+            map(book -> new BookDto(book.getName(), book.getAuthor().getName(), book.getGenre().getName())).
+            collect(Collectors.toList());
     }
 }

@@ -6,10 +6,12 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("SqlResolve")
@@ -57,5 +59,10 @@ public class GenreDaoJdbc implements GenreDao {
     @Override
     public void update(Genre genre) {
         jdbcOperations.update("update Genre g set g.name = :name", Map.of("genreName", genre.getName()));
+    }
+
+    @Override
+    public List<Genre> getAll() {
+        return jdbcOperations.query("select g.id, g.name from genre g", new GenreRowMapper());
     }
 }

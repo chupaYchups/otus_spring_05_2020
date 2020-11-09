@@ -1,6 +1,8 @@
 package ru.chupaYchups.dao;
 
+import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
+import ru.chupaYchups.domain.Genre;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,5 +19,5 @@ public interface BookDao {
 
     List<Book> getAll();
 
-    List<Book> getByAuthorAndGenre(Optional<Long> authorId, Optional<Long> genreId);
+    List<Book> getByAuthorAndGenre(Optional<Author> authorOptional, Optional<Genre> genreOptional);
 }

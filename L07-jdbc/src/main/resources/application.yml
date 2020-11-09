@@ -12,4 +12,4 @@ spring:
 
 logging:
   level:
-    ROOT: DEBUG
+    ROOT: ERROR
