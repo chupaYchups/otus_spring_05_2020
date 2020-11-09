@@ -6,6 +6,8 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.chupaYchups.service.BookService;
 
+import java.util.Optional;
+
 @ShellComponent
 public class ShellCommands {
 
@@ -16,9 +18,13 @@ public class ShellCommands {
         this.bookService = bookService;
     }
 
+    @ShellMethod(value = "getBook", key={"gb", "gbook"})
+    public String getBook(@ShellOption(defaultValue = ShellOption.NULL) String author, @ShellOption(defaultValue = ShellOption.NULL) String genre) {
+       return bookService.getAllBooks(Optional.ofNullable(author), Optional.ofNullable(genre)).toString();
+    }
 
-    @ShellMethod(value = "getBook", key="gb, gbook")
-    public String getBook(@ShellOption String author, @ShellOption String genre) {
-        return bookService.getAllBooks(author, genre).toString();
+    @ShellMethod(value = "hello", key={"h", "hl"})
+    public String hello() {
+        return "Hello Ivan!";
     }
 }

@@ -12,5 +12,5 @@ insert into AUTHOR(id, name) values(4,'Ильф');
 insert into AUTHOR(id, name) values(5,'Петров');
 
 
-insert into BOOK(id, book_name, publish_date, author_id, genre_id)
+insert into BOOK(id, name, publish_date, author_id, genre_id)
 values(1,'Война и Мир', CURDATE(), 1 , 2);

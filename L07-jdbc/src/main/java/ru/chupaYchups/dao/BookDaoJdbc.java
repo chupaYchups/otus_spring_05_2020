@@ -99,19 +99,18 @@ public class BookDaoJdbc implements BookDao {
     public List<Book> getByAuthorAndGenre(Long authorId, Long genreId) {
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
-        sqlParameterSource.addValue("authorId", authorId);
-        sqlParameterSource.addValue("genreId", genreId);
+        if (authorId != null) {
+            sqlParameterSource.addValue("authorId", authorId);
+        }
+        if (genreId != null) {
+            sqlParameterSource.addValue("genreId", genreId);
+        }
 
         return jdbcOperations.query("select " +
                 "b.id, b.publish_date, b.name, " +
                 "b.author_id, b.genre_id, " +
                 "a.name author_name, g.name genre_name  from book b " +
                 "inner join author a on b.author_id = nvl(:authorId, b.author_id)" +
-                "inner join genre g on b.genre_id = nvl(:genreId, b.genre_id)", sqlParameterSource, new ResultSetExtractor<List<Book>>() {
-            @Override
-            public List<Book> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-                return null;
-            }
-        });
+                "inner join genre g on b.genre_id = nvl(:genreId, b.genre_id)", sqlParameterSource, new BookRowMapper());
     }
 }
