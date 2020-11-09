@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.chupaYchups.dao.AuthorDao;
 import ru.chupaYchups.dao.BookDao;
 import ru.chupaYchups.dao.GenreDao;
-import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
-import ru.chupaYchups.domain.Genre;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -23,19 +20,26 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getAllBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional) {
-        Author author;
-        Genre genre;
-
+        Optional<Long> authorIdOptional = Optional.empty();
+        Optional<Long> genreIdOptional = Optional.empty();
         try {
-            author = authorNameOptional.map(authorName -> authorDao.findByName(authorName)).orElseThrow(IllegalAccessException);
+            authorIdOptional = authorNameOptional.isPresent() ?
+                    authorNameOptional.map(authorName -> authorDao.findByName(authorName).getId()) :
+                    Optional.empty();
         } catch (DataAccessException dae) {
-            throw new IllegalArgumentException("Cannot find author with name : " + authorName);
+            authorNameOptional.ifPresent(s -> {
+                throw new IllegalArgumentException("Cannot find author with name : " + s, dae);
+            });
         }
         try {
-            genre = genreDao.findByName(genreName);
+            genreIdOptional = genreNameOptional.isPresent() ?
+                    genreNameOptional.map(authorName -> authorDao.findByName(authorName).getId()) :
+                    Optional.empty();
         } catch (DataAccessException dae) {
-            throw new IllegalArgumentException("Cannot find genre with name : " + genreName);
+            genreNameOptional.ifPresent(s -> {
+                throw new IllegalArgumentException("Cannot find genre with name : " + s, dae);
+            });
         }
-        return bookDao.getByAuthorAndGenre(author.getId(), genre.getId());
+        return bookDao.getByAuthorAndGenre(authorIdOptional, genreIdOptional);
     }
 }

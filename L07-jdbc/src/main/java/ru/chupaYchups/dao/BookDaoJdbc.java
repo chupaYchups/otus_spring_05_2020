@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @SuppressWarnings("SqlResolve")
 @Repository
@@ -96,16 +97,10 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public List<Book> getByAuthorAndGenre(Long authorId, Long genreId) {
-
+    public List<Book> getByAuthorAndGenre(Optional<Long> authorIdOptional, Optional<Long> genreIdOptional) {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
-        if (authorId != null) {
-            sqlParameterSource.addValue("authorId", authorId);
-        }
-        if (genreId != null) {
-            sqlParameterSource.addValue("genreId", genreId);
-        }
-
+        sqlParameterSource.addValue("authorId", authorIdOptional.orElse(null));
+        sqlParameterSource.addValue("genreId", genreIdOptional.orElse(null));
         return jdbcOperations.query("select " +
                 "b.id, b.publish_date, b.name, " +
                 "b.author_id, b.genre_id, " +
