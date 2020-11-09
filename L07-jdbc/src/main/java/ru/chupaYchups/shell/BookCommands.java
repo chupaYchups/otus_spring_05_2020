@@ -31,7 +31,7 @@ public class BookCommands {
 
     //public String addBook(String name, String author, String genre);
 
-    //public String updateBookById(String name, String author, String genre);
+    //public String updateBookById(Long id, String name, String author, String genre);
 
-    //public String deleteBookById(String name);
+    //public String deleteBookById(Long id, String name);
 }
