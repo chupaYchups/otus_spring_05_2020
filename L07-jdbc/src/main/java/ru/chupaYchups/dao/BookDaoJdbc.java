@@ -1,16 +1,18 @@
 package ru.chupaYchups.dao;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 
+import javax.validation.constraints.NotNull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -91,5 +93,25 @@ public class BookDaoJdbc implements BookDao {
             "a.name author_name, g.name genre_name  from book b " +
             "inner join author a on b.author_id = a.id " +
             "inner join genre g on b.genre_id = g.id", new BookRowMapper());
+    }
+
+    @Override
+    public List<Book> getByAuthorAndGenre(Long authorId, Long genreId) {
+
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("authorId", authorId);
+        sqlParameterSource.addValue("genreId", genreId);
+
+        return jdbcOperations.query("select " +
+                "b.id, b.publish_date, b.name, " +
+                "b.author_id, b.genre_id, " +
+                "a.name author_name, g.name genre_name  from book b " +
+                "inner join author a on b.author_id = nvl(:authorId, b.author_id)" +
+                "inner join genre g on b.genre_id = nvl(:genreId, b.genre_id)", sqlParameterSource, new ResultSetExtractor<List<Book>>() {
+            @Override
+            public List<Book> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+                return null;
+            }
+        });
     }
 }

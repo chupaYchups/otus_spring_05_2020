@@ -1,13 +1,10 @@
 package ru.chupaYchups.dao;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
-import ru.chupaYchups.domain.Genre;
 import java.util.Date;
 import static org.assertj.core.api.Assertions.assertThat;
 

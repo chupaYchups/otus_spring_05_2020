@@ -15,4 +15,6 @@ public interface BookDao {
     void update(Book book);
 
     List<Book> getAll();
+
+    List<Book> getByAuthorAndGenre(Long authorId, Long genreId);
 }
