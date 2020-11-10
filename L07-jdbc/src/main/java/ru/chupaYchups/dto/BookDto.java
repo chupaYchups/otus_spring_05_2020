@@ -1,8 +1,10 @@
 package ru.chupaYchups.dto;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Data
 public class BookDto {
 
     private final long id;

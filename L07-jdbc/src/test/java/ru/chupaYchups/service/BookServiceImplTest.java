@@ -20,8 +20,11 @@ import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.dto.BookDto;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @DisplayName("Тестирование того что сервис корректно")
@@ -38,7 +41,9 @@ class BookServiceImplTest {
     private BookService bookService;
 
     private Author testAuthor;
+    private Author testAuthor2;
     private Genre testGenre;
+    private Genre testGenre2;
 
     @Configuration
     @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = ShellComponent.class))
@@ -48,18 +53,26 @@ class BookServiceImplTest {
     void setUp() {
         testAuthor = new Author("Test author");
         testGenre = new Genre("Test genre");
+        testAuthor2 = new Author("Test author 2");
+        testGenre2 = new Genre("Test genre 2");
     }
 
     @Test
     void testThatServiceCorrectlyQueryAllBooks() {
-        List<Book> expectedDtoList = List.of(new Book(1l, "test book 1", testAuthor, testGenre),
-                new Book(2l, "test book 2", testAuthor, testGenre));
-        BDDMockito.given(bookDao.findBooks(Optional.empty(), Optional.empty(), Optional.empty())).willReturn(expectedDtoList);
+
+        List<Book> testBookList = List.of(new Book(1L, "test book 1", testAuthor, testGenre),
+                new Book(2l, "test book 2", testAuthor2, testGenre2));
+
+        Map<Long, Book> testBookMap = testBookList.stream().collect(Collectors.toMap(book -> book.getId(), book -> book));
+        BDDMockito.given(bookDao.findBooks(Optional.empty(), Optional.empty(), Optional.empty())).willReturn(testBookList);
 
         List<BookDto> actualDtoList = bookService.findBooks(Optional.empty(), Optional.empty(), Optional.empty());
 
-        assertThat(actualDtoList).hasSameSizeAs(expectedDtoList);
-        //assertThat(actualDtoList.get(0)).isEqualToComparingFieldByField(expectedDtoList.get(0));
+        assertThat(actualDtoList).hasSameSizeAs(testBookList).allSatisfy(bookDto -> {
+            assertThat(bookDto).isEqualToComparingOnlyGivenFields(testBookMap.get(bookDto.getId()), "id", "name");
+            assertThat(bookDto.getAuthor()).isEqualTo(testBookMap.get(bookDto.getId()).getAuthor().getName());
+            assertThat(bookDto.getGenre()).isEqualTo(testBookMap.get(bookDto.getId()).getGenre().getName());
+        });
     }
 
     @Test
