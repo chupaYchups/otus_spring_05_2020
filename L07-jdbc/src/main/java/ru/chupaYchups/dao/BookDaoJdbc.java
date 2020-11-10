@@ -100,14 +100,14 @@ public class BookDaoJdbc implements BookDao {
         sqlParameterSource.addValue("authorId", authorOptional.map(author -> author.getId()).orElse(null));
         sqlParameterSource.addValue("genreId", genreOptional.map(genre -> genre.getId()).orElse(null));
         return jdbcOperations.query("select " +
-                "b.id, b.name, " +
-                "b.author_id, b.genre_id, " +
-                "a.name author_name, g.name genre_name  from book b " +
-                "inner join author a on b.author_id = a.id " +
-                "inner join genre g on b.genre_id = g.id " +
-                "where a.id = nvl(:authorId, a.id)" +
-                "and g.id = nvl(:genreId, g.id)",
-                sqlParameterSource,
-                new BookRowMapper());
+            "b.id, b.name, " +
+            "b.author_id, b.genre_id, " +
+            "a.name author_name, g.name genre_name  from book b " +
+            "inner join author a on b.author_id = a.id " +
+            "inner join genre g on b.genre_id = g.id " +
+            "where a.id = nvl(:authorId, a.id) " +
+            "and g.id = nvl(:genreId, g.id) ",
+            sqlParameterSource,
+            new BookRowMapper());
     }
 }
