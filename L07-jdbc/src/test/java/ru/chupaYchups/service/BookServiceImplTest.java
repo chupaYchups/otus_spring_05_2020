@@ -62,7 +62,6 @@ class BookServiceImplTest {
     }
 
     @Test
-    //todo как сделать так, чтобы проверить что вызвалось - один раз!!!
     void testThatServiceCorrectlyQueryAllBooks() {
 
         List<Book> testBookList = List.of(new Book(1L, "test book 1", testAuthor, testGenre),
