@@ -5,14 +5,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BookDto {
 
+    private final long id;
     private final String name;
     private final String author;
     private final String genre;
 
     @Override
     public String toString() {
-        return "Book : '" + name + '\'' +
+        return "Book : " + "id = " + id +
+                ", name = '" + name + '\'' +
                 ", author = '" + author + '\'' +
-                ", genre='" + genre + '\'';
+                ", genre = '" + genre + '\'';
     }
 }

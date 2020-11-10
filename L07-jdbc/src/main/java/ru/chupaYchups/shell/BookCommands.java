@@ -36,9 +36,9 @@ public class BookCommands {
 
     @ShellMethod(value = "Updating book by identificator.", key ={"ub", "updatebook", "updbook"})
     public String updateBookById(@ShellOption Long id,
-            @ShellOption(value = {"--n", "--name"})String name,
-            @ShellOption(value = {"--a", "--author"})String author,
-            @ShellOption(value = {"--g", "--genre"})String genre) {
+            @ShellOption(value = {"--n", "--name"}, defaultValue = ShellOption.NULL)String name,
+            @ShellOption(value = {"--a", "--author"}, defaultValue = ShellOption.NULL)String author,
+            @ShellOption(value = {"--g", "--genre"}, defaultValue = ShellOption.NULL)String genre) {
         bookService.updateBookById(id, name, author, genre);
         return "Book with id '" + id + "' sucessfully updated";
     }

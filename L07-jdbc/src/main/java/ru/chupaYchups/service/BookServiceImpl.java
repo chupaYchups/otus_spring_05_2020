@@ -28,7 +28,7 @@ public class BookServiceImpl implements BookService {
         Optional<Genre> genreOptional = genreNameOptional.flatMap(genreName -> genreDao.findByName(genreName));
         return bookDao.getByAuthorAndGenre(authorOptional, genreOptional).
             stream().
-            map(book -> new BookDto(book.getName(), book.getAuthor().getName(), book.getGenre().getName())).
+            map(book -> new BookDto(book.getId(), book.getName(), book.getAuthor().getName(), book.getGenre().getName())).
             collect(Collectors.toList());
     }
 
