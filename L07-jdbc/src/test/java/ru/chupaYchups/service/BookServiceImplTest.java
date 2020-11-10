@@ -63,7 +63,7 @@ class BookServiceImplTest {
         List<Book> testBookList = List.of(new Book(1L, "test book 1", testAuthor, testGenre),
                 new Book(2l, "test book 2", testAuthor2, testGenre2));
 
-        Map<Long, Book> testBookMap = testBookList.stream().collect(Collectors.toMap(book -> book.getId(), book -> book));
+        Map<Long, Book> testBookMap = testBookList.stream().collect(Collectors.toMap(Book::getId, book -> book));
         BDDMockito.given(bookDao.findBooks(Optional.empty(), Optional.empty(), Optional.empty())).willReturn(testBookList);
 
         List<BookDto> actualDtoList = bookService.findBooks(Optional.empty(), Optional.empty(), Optional.empty());
