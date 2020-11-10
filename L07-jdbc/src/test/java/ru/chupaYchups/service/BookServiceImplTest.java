@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
+import org.mockito.Mockito;
+import org.mockito.verification.VerificationMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,6 +20,8 @@ import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.dto.BookDto;
+
+import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
@@ -58,6 +62,7 @@ class BookServiceImplTest {
     }
 
     @Test
+    //todo как сделать так, чтобы проверить что вызвалось - один раз!!!
     void testThatServiceCorrectlyQueryAllBooks() {
 
         List<Book> testBookList = List.of(new Book(1L, "test book 1", testAuthor, testGenre),
@@ -73,6 +78,8 @@ class BookServiceImplTest {
             assertThat(bookDto.getAuthor()).isEqualTo(testBookMap.get(bookDto.getId()).getAuthor().getName());
             assertThat(bookDto.getGenre()).isEqualTo(testBookMap.get(bookDto.getId()).getGenre().getName());
         });
+
+        BDDMockito.then(bookDao).should(Mockito.atMostOnce()).findBooks(Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     @Test
