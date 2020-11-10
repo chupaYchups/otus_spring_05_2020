@@ -10,6 +10,6 @@ public class AuthorDto {
     @Override
     public String toString() {
         return "Аuthor - " +
-                "name='" + name + '\'';
+                "name = '" + name + '\'';
     }
 }

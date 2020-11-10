@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface GenreDao {
 
-    long insert(Genre genre);
+    Genre insert(Genre genre);
 
     Genre findById(Long id);
 

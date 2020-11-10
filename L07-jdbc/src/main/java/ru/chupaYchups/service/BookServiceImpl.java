@@ -9,7 +9,6 @@ import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.dto.BookDto;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,33 +33,23 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void addBook(String name, String authorName, String genreName) {
-        Author author = authorDao.findByName(authorName).orElseGet(() -> {
-            Author newAuthor = new Author(authorName);
-            newAuthor.setId(authorDao.insert(newAuthor));
-            return newAuthor;
-        });
-        Genre genre = genreDao.findByName(genreName).orElseGet(() -> {
-            Genre newGenre = new Genre(genreName);
-            newGenre.setId(genreDao.insert(newGenre));
-            return newGenre;
-        });
+        Author author = authorDao.findByName(authorName).orElseGet(() -> authorDao.insert(new Author(authorName)));
+        Genre genre = genreDao.findByName(genreName).orElseGet(() -> genreDao.insert(new Genre(genreName)));
         bookDao.insert(new Book(name, author, genre));
     }
 
     @Override
-    public void updateBookById(long id, String name, String authorName, String genreName) {
+    public void updateBookById(long id, Optional<String> nameOptional, Optional<String> authorNameOptional, Optional<String> genreNameOptional) {
         Book book = bookDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Cannot find book with id: " + id));
-        book.setName(name);
-        book.setAuthor(authorDao.findByName(authorName).orElseGet(() -> {
-            Author newAuthor = new Author(authorName);
-            newAuthor.setId(authorDao.insert(newAuthor));
-            return newAuthor;
-        }));
-        book.setGenre(genreDao.findByName(genreName).orElseGet(() -> {
-            Genre newGenre = new Genre(authorName);
-            newGenre.setId(genreDao.insert(newGenre));
-            return newGenre;
-        }));
+        nameOptional.ifPresent(name ->
+            book.setName(name));
+        authorNameOptional.ifPresent(authorName ->
+            book.setAuthor(authorDao.findByName(authorName).
+                orElseGet(() -> authorDao.insert(new Author(authorName)))));
+        genreNameOptional.ifPresent(genreName ->
+            book.setGenre(genreDao.findByName(genreName).
+                orElseGet(() -> genreDao.insert(new Genre(genreName)))));
+        bookDao.update(book);
     }
 
     @Override

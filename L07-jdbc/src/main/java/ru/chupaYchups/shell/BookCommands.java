@@ -39,7 +39,8 @@ public class BookCommands {
             @ShellOption(value = {"--n", "--name"}, defaultValue = ShellOption.NULL)String name,
             @ShellOption(value = {"--a", "--author"}, defaultValue = ShellOption.NULL)String author,
             @ShellOption(value = {"--g", "--genre"}, defaultValue = ShellOption.NULL)String genre) {
-        bookService.updateBookById(id, name, author, genre);
+        bookService.updateBookById(id, Optional.ofNullable(name),
+            Optional.ofNullable(author), Optional.ofNullable(genre));
         return "Book with id '" + id + "' sucessfully updated";
     }
 

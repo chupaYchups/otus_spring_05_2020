@@ -34,17 +34,17 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public long insert(Author author) {
+    public Author insert(Author author) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("authorName", author.getName());
         KeyHolder kh = new GeneratedKeyHolder();
         jdbcOperations.update("insert into Author(name) values(:authorName)", params, kh);
-        return kh.getKey().longValue();
+        return findById(kh.getKey().longValue());
     }
 
     @Override
     public Author findById(Long id) {
-        return jdbcOperations.queryForObject("select a.id, a.name from author where id = :id",
+        return jdbcOperations.queryForObject("select a.id, a.name from author a where id = :id",
             Map.of("id", id), new AuthorRowMapper());
     }
 

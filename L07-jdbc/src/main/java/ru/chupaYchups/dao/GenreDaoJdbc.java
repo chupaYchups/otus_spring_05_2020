@@ -33,13 +33,13 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
-    public long insert(Genre genre) {
+    public Genre insert(Genre genre) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("genreName", genre.getName());
         KeyHolder kh = new GeneratedKeyHolder();
         jdbcOperations.update("insert into Genre(name) values(:genreName)",
                 params, kh);
-        return kh.getKey().longValue();
+        return findById(kh.getKey().longValue());
     }
 
     @Override

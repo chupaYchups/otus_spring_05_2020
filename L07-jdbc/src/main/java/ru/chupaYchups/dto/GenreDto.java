@@ -10,6 +10,6 @@ public class GenreDto {
     @Override
     public String toString() {
         return "Genre - " +
-                "name='" + name + '\'';
+                "name = '" + name + '\'';
     }
 }
