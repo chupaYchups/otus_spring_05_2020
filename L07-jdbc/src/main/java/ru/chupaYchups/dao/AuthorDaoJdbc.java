@@ -1,5 +1,6 @@
 package ru.chupaYchups.dao;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,20 +18,16 @@ import java.util.Optional;
 
 @SuppressWarnings("SqlResolve")
 @Repository
+@RequiredArgsConstructor
 public class AuthorDaoJdbc implements AuthorDao {
+
+    private final NamedParameterJdbcOperations jdbcOperations;
 
     private final static class AuthorRowMapper implements RowMapper<Author> {
         @Override
         public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Author(rs.getLong("id"), rs.getString("name"));
         }
-    }
-
-
-    private final NamedParameterJdbcOperations jdbcOperations;
-
-    public AuthorDaoJdbc(NamedParameterJdbcOperations jdbcOperations) {
-        this.jdbcOperations = jdbcOperations;
     }
 
     @Override
@@ -62,18 +59,6 @@ public class AuthorDaoJdbc implements AuthorDao {
             //todo debug
             return Optional.empty();
         }
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        jdbcOperations.update("delete from author where a.id = :id",
-            Map.of("id", id));
-    }
-
-    @Override
-    public void update(Author author) {
-        jdbcOperations.update("update author a set a.name = :name",
-            Map.of("id", author.getId(), "name", author.getName()));
     }
 
     @Override

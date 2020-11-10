@@ -1,5 +1,6 @@
 package ru.chupaYchups.dao;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,19 +18,16 @@ import java.util.Optional;
 
 @SuppressWarnings("SqlResolve")
 @Repository
+@RequiredArgsConstructor
 public class GenreDaoJdbc implements GenreDao {
+
+    private final NamedParameterJdbcOperations jdbcOperations;
 
     private final static class GenreRowMapper implements RowMapper<Genre> {
         @Override
         public Genre mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Genre(rs.getLong("id"), rs.getString("name"));
         }
-    }
-
-    private final NamedParameterJdbcOperations jdbcOperations;
-
-    public GenreDaoJdbc(NamedParameterJdbcOperations jdbcOperations) {
-        this.jdbcOperations = jdbcOperations;
     }
 
     @Override
@@ -61,16 +59,6 @@ public class GenreDaoJdbc implements GenreDao {
         } catch (EmptyResultDataAccessException dae) {
             return Optional.empty();
         }
-    }
-
-    @Override
-    public void delete(Long id) {
-        jdbcOperations.update("delete from Genre where id = :id", Map.of("id", id));
-    }
-
-    @Override
-    public void update(Genre genre) {
-        jdbcOperations.update("update Genre g set g.name = :name", Map.of("genreName", genre.getName()));
     }
 
     @Override

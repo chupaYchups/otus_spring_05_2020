@@ -13,7 +13,6 @@ import ru.chupaYchups.domain.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,7 +43,6 @@ public class BookDaoJdbc implements BookDao {
         params.addValue("bookName", book.getName());
         params.addValue("authorId", book.getAuthor().getId());
         params.addValue("genreId", book.getGenre().getId());
-
         KeyHolder kh = new GeneratedKeyHolder();
         jdbcOperations.update("insert into book(name, author_id, genre_id) " +
                 "values(:bookName, :authorId, :genreId)", params, kh);
@@ -85,20 +83,11 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public List<Book> getAll() {
-        return jdbcOperations.query("select " +
-            "b.id, b.name, " +
-            "b.author_id, b.genre_id, " +
-            "a.name author_name, g.name genre_name  from book b " +
-            "inner join author a on b.author_id = a.id " +
-            "inner join genre g on b.genre_id = g.id", new BookRowMapper());
-    }
-
-    @Override
-    public List<Book> getByAuthorAndGenre(Optional<Author> authorOptional, Optional<Genre> genreOptional) {
+    public List<Book> findBooks(Optional<Author> authorOptional, Optional<Genre> genreOptional, Optional<String> nameOptional) {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("authorId", authorOptional.map(author -> author.getId()).orElse(null));
         sqlParameterSource.addValue("genreId", genreOptional.map(genre -> genre.getId()).orElse(null));
+        sqlParameterSource.addValue("name", nameOptional.orElse(null));
         return jdbcOperations.query("select " +
             "b.id, b.name, " +
             "b.author_id, b.genre_id, " +
@@ -106,7 +95,8 @@ public class BookDaoJdbc implements BookDao {
             "inner join author a on b.author_id = a.id " +
             "inner join genre g on b.genre_id = g.id " +
             "where a.id = nvl(:authorId, a.id) " +
-            "and g.id = nvl(:genreId, g.id) ",
+            "and g.id = nvl(:genreId, g.id) " +
+            "and b.name = nvl(:name, b.name)",
             sqlParameterSource,
             new BookRowMapper());
     }

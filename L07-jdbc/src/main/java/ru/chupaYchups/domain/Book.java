@@ -2,9 +2,6 @@ package ru.chupaYchups.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Date;
 
 @Data
 @AllArgsConstructor

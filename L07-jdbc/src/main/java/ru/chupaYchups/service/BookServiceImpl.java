@@ -22,10 +22,10 @@ public class BookServiceImpl implements BookService {
     private final GenreDao genreDao;
 
     @Override
-    public List<BookDto> getAllBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional, Optional<String> nameOptional) {
+    public List<BookDto> findBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional, Optional<String> nameOptional) {
         Optional<Author> authorOptional = authorNameOptional.flatMap(authorName -> authorDao.findByName(authorName));
         Optional<Genre> genreOptional = genreNameOptional.flatMap(genreName -> genreDao.findByName(genreName));
-        return bookDao.getByAuthorAndGenre(authorOptional, genreOptional).
+        return bookDao.findBooks(authorOptional, genreOptional, nameOptional).
             stream().
             map(book -> new BookDto(book.getId(), book.getName(), book.getAuthor().getName(), book.getGenre().getName())).
             collect(Collectors.toList());

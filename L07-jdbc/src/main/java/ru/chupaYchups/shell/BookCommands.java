@@ -24,7 +24,7 @@ public class BookCommands {
     public String getBook(@ShellOption(value={"--a", "--author"}, defaultValue = ShellOption.NULL) String author,
             @ShellOption(value={"--g", "--genre"}, defaultValue = ShellOption.NULL) String genre,
             @ShellOption(value={"--n", "--name"}, defaultValue = ShellOption.NULL) String name) {
-        return bookService.getAllBooks(Optional.ofNullable(author), Optional.ofNullable(genre), Optional.ofNullable(name)).
+        return bookService.findBooks(Optional.ofNullable(author), Optional.ofNullable(genre), Optional.ofNullable(name)).
             stream().map(BookDto::toString).collect(Collectors.joining("\n"));
     }
 
