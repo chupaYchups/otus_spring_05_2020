@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import ru.chupaYchups.domain.Book;
-import java.util.Date;
+
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -26,11 +28,13 @@ class BookDaoJdbcTest {
 
     @Test
     void insert() {
-        Book expectedBook = new Book(null, new Date(), TEST_BOOK_NAME, authorDao.findByName(TEST_AUTHOR_NAME), genreDao.findByName(TEST_GENRE_NAME));
+        Book expectedBook = new Book(TEST_BOOK_NAME,
+            authorDao.findByName(TEST_AUTHOR_NAME).get(),
+            genreDao.findByName(TEST_GENRE_NAME).get());
         long bookId = bookDao.insert(expectedBook);
         assertThat(bookId).isNotEqualTo(expectedBook.getId());
-        Book actualBook = bookDao.findById(bookId);
-        assertThat(actualBook).isEqualToIgnoringNullFields(expectedBook);
+        Optional<Book> actualBookOptional = bookDao.findById(bookId);
+        assertThat(actualBookOptional).isNotEmpty().get().isEqualToIgnoringNullFields(expectedBook);
     }
 
     @Test

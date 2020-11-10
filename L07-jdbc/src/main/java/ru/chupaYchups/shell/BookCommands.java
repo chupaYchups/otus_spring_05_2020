@@ -20,18 +20,32 @@ public class BookCommands {
         this.bookService = bookService;
     }
 
-    @ShellMethod(value = "Getting books", key={"gb", "gbook"})
+    @ShellMethod(value = "Getting books.", key={"gb", "gbook"})
     public String getBook(@ShellOption(value={"--a", "--author"}, defaultValue = ShellOption.NULL) String author,
-        @ShellOption(value={"--g", "--genre"}, defaultValue = ShellOption.NULL) String genre,
-        @ShellOption(value={"--n", "--name"}, defaultValue = ShellOption.NULL) String name) {
-
+            @ShellOption(value={"--g", "--genre"}, defaultValue = ShellOption.NULL) String genre,
+            @ShellOption(value={"--n", "--name"}, defaultValue = ShellOption.NULL) String name) {
         return bookService.getAllBooks(Optional.ofNullable(author), Optional.ofNullable(genre), Optional.ofNullable(name)).
             stream().map(BookDto::toString).collect(Collectors.joining("\n"));
     }
 
-    //public String addBook(String name, String author, String genre);
+    @ShellMethod(value = "Adding book.", key ={"ab", "addBook"})
+    public String addBook(@ShellOption(value={"--n", "--name"})String name,@ShellOption(value={"--a", "--author"})String author,@ShellOption(value={"--g", "--genre"})String genre) {
+        bookService.addBook(name, author, genre);
+        return "Book '" + name + "' sucessfully added";
+    }
 
-    //public String updateBookById(Long id, String name, String author, String genre);
+    @ShellMethod(value = "Updating book by identificator.", key ={"ub", "updatebook", "updbook"})
+    public String updateBookById(@ShellOption Long id,
+            @ShellOption(value = {"--n", "--name"})String name,
+            @ShellOption(value = {"--a", "--author"})String author,
+            @ShellOption(value = {"--g", "--genre"})String genre) {
+        bookService.updateBookById(id, name, author, genre);
+        return "Book with id '" + id + "' sucessfully updated";
+    }
 
-    //public String deleteBookById(Long id, String name);
+    @ShellMethod(value = "Deleting book by identificator.", key ={"db", "delbook", "deleteBook"})
+    public String deleteBookById(Long id) {
+        bookService.deleteBookById(id);
+        return "Book with id '" + id + "' sucessfully deleted";
+    }
 }

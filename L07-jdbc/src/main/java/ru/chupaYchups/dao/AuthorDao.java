@@ -3,6 +3,7 @@ package ru.chupaYchups.dao;
 import ru.chupaYchups.domain.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuthorDao {
 
@@ -10,7 +11,7 @@ public interface AuthorDao {
 
     Author findById(Long id);
 
-    Author findByName(String name);
+    Optional<Author> findByName(String name);
 
     void deleteById(Long id);
 

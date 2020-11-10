@@ -1,5 +1,6 @@
 package ru.chupaYchups.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -12,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @SuppressWarnings("SqlResolve")
 @Repository
@@ -47,9 +49,19 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Author findByName(String name) {
-        return jdbcOperations.queryForObject("select a.id, a.name from author a where a.name = :name",
-                Map.of("name", name), new AuthorRowMapper());
+    public Optional<Author> findByName(String name) {
+        try {
+            return Optional.of(
+                jdbcOperations.queryForObject("select a.id," +
+                " a.name " +
+                "from author a " +
+                "where a.name = :name",
+                Map.of("name", name),
+                new AuthorRowMapper()));
+        } catch (EmptyResultDataAccessException dae) {
+            //todo debug
+            return Optional.empty();
+        }
     }
 
     @Override

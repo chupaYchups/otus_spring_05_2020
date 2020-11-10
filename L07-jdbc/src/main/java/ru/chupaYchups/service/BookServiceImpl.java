@@ -1,12 +1,12 @@
 package ru.chupaYchups.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import ru.chupaYchups.dao.AuthorDao;
 import ru.chupaYchups.dao.BookDao;
 import ru.chupaYchups.dao.GenreDao;
 import ru.chupaYchups.domain.Author;
+import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.dto.BookDto;
 
@@ -24,26 +24,48 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> getAllBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional, Optional<String> nameOptional) {
-
-        Optional<Author> authorOptional = authorNameOptional.map(authorName -> {
-            try {
-                return authorDao.findByName(authorName);
-            } catch (DataAccessException dae) {
-                throw new IllegalArgumentException("Cannot find author with name : " + authorName, dae);
-            }
-        });
-
-        Optional<Genre> genreOptional = genreNameOptional.map(genreName -> {
-            try {
-                return genreDao.findByName(genreName);
-            } catch (DataAccessException dae) {
-                throw new IllegalArgumentException("Cannot find genre with name : " + genreName, dae);
-            }
-        });
-
+        Optional<Author> authorOptional = authorNameOptional.flatMap(authorName -> authorDao.findByName(authorName));
+        Optional<Genre> genreOptional = genreNameOptional.flatMap(genreName -> genreDao.findByName(genreName));
         return bookDao.getByAuthorAndGenre(authorOptional, genreOptional).
             stream().
             map(book -> new BookDto(book.getName(), book.getAuthor().getName(), book.getGenre().getName())).
             collect(Collectors.toList());
+    }
+
+    @Override
+    public void addBook(String name, String authorName, String genreName) {
+        Author author = authorDao.findByName(authorName).orElseGet(() -> {
+            Author newAuthor = new Author(authorName);
+            newAuthor.setId(authorDao.insert(newAuthor));
+            return newAuthor;
+        });
+        Genre genre = genreDao.findByName(genreName).orElseGet(() -> {
+            Genre newGenre = new Genre(genreName);
+            newGenre.setId(genreDao.insert(newGenre));
+            return newGenre;
+        });
+        bookDao.insert(new Book(name, author, genre));
+    }
+
+    @Override
+    public void updateBookById(long id, String name, String authorName, String genreName) {
+        Book book = bookDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Cannot find book with id: " + id));
+        book.setName(name);
+        book.setAuthor(authorDao.findByName(authorName).orElseGet(() -> {
+            Author newAuthor = new Author(authorName);
+            newAuthor.setId(authorDao.insert(newAuthor));
+            return newAuthor;
+        }));
+        book.setGenre(genreDao.findByName(genreName).orElseGet(() -> {
+            Genre newGenre = new Genre(authorName);
+            newGenre.setId(genreDao.insert(newGenre));
+            return newGenre;
+        }));
+    }
+
+    @Override
+    public void deleteBookById(long id) {
+        Book book = bookDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Cannot find book with id: " + id));
+        bookDao.delete(book);
     }
 }

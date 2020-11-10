@@ -1,13 +1,21 @@
 package ru.chupaYchups.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
 public class Book {
-    private final Long id;
-    private final Date publishDate;
-    private final String name;
-    private final Author author;
-    private final Genre genre;
+    private long id;
+    private String name;
+    private Author author;
+    private Genre genre;
+    public Book(String name, Author author, Genre genre) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
 }

@@ -3,6 +3,7 @@ package ru.chupaYchups.dao;
 import ru.chupaYchups.domain.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenreDao {
 
@@ -10,7 +11,7 @@ public interface GenreDao {
 
     Genre findById(Long id);
 
-    Genre findByName(String name);
+    Optional<Genre> findByName(String name);
 
     void delete(Long id);
 
