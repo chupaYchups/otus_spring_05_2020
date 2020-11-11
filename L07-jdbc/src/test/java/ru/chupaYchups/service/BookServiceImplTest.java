@@ -78,7 +78,9 @@ class BookServiceImplTest {
             assertThat(bookDto.getGenre()).isEqualTo(testBookMap.get(bookDto.getId()).getGenre().getName());
         });
 
-        BDDMockito.then(bookDao).should(Mockito.atMostOnce()).findBooks(Optional.empty(), Optional.empty(), Optional.empty());
+        BDDMockito.then(bookDao).should(Mockito.times(1)).findBooks(Mockito.any(Optional.class), Mockito.any(Optional.class), Mockito.any(Optional.class));
+        Mockito.verifyNoInteractions(genreDao, authorDao);
+        Mockito.verifyNoMoreInteractions(bookDao);
     }
 
     @Test
