@@ -41,14 +41,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public void updateBookById(long id, Optional<String> nameOptional, Optional<String> authorNameOptional, Optional<String> genreNameOptional) {
         Book book = bookDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Cannot find book with id: " + id));
-        nameOptional.ifPresent(name ->
-            book.setName(name));
-        authorNameOptional.ifPresent(authorName ->
-            book.setAuthor(authorDao.findByName(authorName).
-                orElseGet(() -> authorDao.insert(new Author(authorName)))));
-        genreNameOptional.ifPresent(genreName ->
-            book.setGenre(genreDao.findByName(genreName).
-                orElseGet(() -> genreDao.insert(new Genre(genreName)))));
+        nameOptional.ifPresent(name -> book.setName(name));
+        authorNameOptional.ifPresent(authorName -> book.setAuthor(authorDao.findByName(authorName).
+            orElseGet(() -> authorDao.insert(new Author(authorName)))));
+        genreNameOptional.ifPresent(genreName -> book.setGenre(genreDao.findByName(genreName).
+            orElseGet(() -> genreDao.insert(new Genre(genreName)))));
         bookDao.update(book);
     }
 
