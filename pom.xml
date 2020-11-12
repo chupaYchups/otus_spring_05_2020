@@ -20,6 +20,7 @@
         <module>L02-java-and-annotation-config</module>
         <module>L04-springBoot</module>
         <module>L07-jdbc</module>
+        <module>L09-orm</module>
     </modules>
 
     <dependencies>
