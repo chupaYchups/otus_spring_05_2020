@@ -56,7 +56,6 @@ public class AuthorDaoJdbc implements AuthorDao {
                 Map.of("name", name),
                 new AuthorRowMapper()));
         } catch (EmptyResultDataAccessException dae) {
-            //todo debug
             return Optional.empty();
         }
     }

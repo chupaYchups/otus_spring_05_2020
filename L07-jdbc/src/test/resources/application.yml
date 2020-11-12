@@ -4,6 +4,12 @@ spring:
     initialization-mode: always
     data: data-test.sql
 
+jpa:
+  generate-ddl: false
+  hibernate:
+    ddl-auto: none
+  show-sql: true
+
 logging:
   level:
-    ROOT: INFO
+    ROOT: DEBUG

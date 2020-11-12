@@ -50,8 +50,8 @@ public class GenreDaoJdbc implements GenreDao {
         try {
             return Optional.of(
                     jdbcOperations.queryForObject(
-                            "select g.id," +
-                                    " g.name " +
+                            "select g.id, " +
+                                    "g.name " +
                                     "from Genre g " +
                                     "where name = :name",
                             Map.of("name", name),
