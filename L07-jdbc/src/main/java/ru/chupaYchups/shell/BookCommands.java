@@ -20,12 +20,17 @@ public class BookCommands {
         this.bookService = bookService;
     }
 
-    @ShellMethod(value = "Getting books.", key={"gb", "getbook"})
+    @ShellMethod(value = "Finding books.", key={"fb", "findbook"})
     public String getBook(@ShellOption(value={"--a", "--author"}, defaultValue = ShellOption.NULL) String author,
             @ShellOption(value={"--g", "--genre"}, defaultValue = ShellOption.NULL) String genre,
             @ShellOption(value={"--n", "--name"}, defaultValue = ShellOption.NULL) String name) {
         return bookService.findBooks(Optional.ofNullable(author), Optional.ofNullable(genre), Optional.ofNullable(name)).
             stream().map(BookDto::toString).collect(Collectors.joining("\n"));
+    }
+
+    @ShellMethod(value = "Show all books.", key={"bs", "books", "allbooks"})
+    public String allBooks() {
+        return bookService.getAllBooks().stream().map(BookDto::toString).collect(Collectors.joining("\n"));
     }
 
     @ShellMethod(value = "Adding book.", key ={"ab", "addbook"})

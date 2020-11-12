@@ -9,4 +9,5 @@ public interface BookService {
     void addBook(String name, String authorName, String genreName);
     void updateBookById(long id, Optional<String> namOptional, Optional<String> authorName, Optional<String> genreName);
     void deleteBookById(long id);
+    List<BookDto> getAllBooks();
 }

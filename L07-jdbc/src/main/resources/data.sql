@@ -1,19 +1,19 @@
 -- noinspection SqlResolveForFile
 
-insert into GENRE (id, name) values (1, 'Детектив');
-insert into GENRE (id, name) values (2, 'Роман');
-insert into GENRE (id, name) values (3, 'Детская сказка');
-insert into GENRE (id, name) values (4, 'Рассказ');
+insert into GENRE (id, name) values (1, 'Detective');
+insert into GENRE (id, name) values (2, 'Novel');
+insert into GENRE (id, name) values (3, 'Children tale');
+insert into GENRE (id, name) values (4, 'Story');
 
-insert into AUTHOR(id, name) values(1,'Толстой');
-insert into AUTHOR(id, name) values(2,'Пушкин');
-insert into AUTHOR(id, name) values(3,'Есенин');
-insert into AUTHOR(id, name) values(4,'Ильф');
-insert into AUTHOR(id, name) values(5,'Петров');
+insert into AUTHOR(id, name) values(1,'Tolstoy');
+insert into AUTHOR(id, name) values(2,'Pushkin');
+insert into AUTHOR(id, name) values(3,'Esenin');
+insert into AUTHOR(id, name) values(4,'Ilf');
+insert into AUTHOR(id, name) values(5,'Petrov');
 
-
-insert into BOOK(name, author_id, genre_id)
-values('Война и Мир', 1 , 2);
 
 insert into BOOK(name, author_id, genre_id)
-values('Чёрный человек', 3 , 2);
+values('War and Peace', 1 , 2);
+
+insert into BOOK(name, author_id, genre_id)
+values('Black man', 3 , 2);

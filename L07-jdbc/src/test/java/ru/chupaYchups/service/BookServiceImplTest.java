@@ -1,10 +1,7 @@
 package ru.chupaYchups.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.BDDMockito;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +18,12 @@ import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.dto.BookDto;
-
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,8 +43,8 @@ class BookServiceImplTest {
     public static final String TEST_BOOK_NAME_2 = "Test book 2";
     public static final String ID_FIELD = "id";
     public static final String NAME_FIELD = "name";
-    public static final String AUTHOR_NAME_FIELD = "author.name";
-    public static final String GENRE_NAME_FIELD = "genre.name";
+    public static final String AUTHOR_NAME_FIELD_PATH = "author.name";
+    public static final String GENRE_NAME_FIELD_PATH = "genre.name";
     @MockBean
     private BookDao bookDao;
     @MockBean
@@ -127,7 +122,7 @@ class BookServiceImplTest {
 
     private void checkDomainObjectEqualsDto(Book testBook, BookDto actualBookDTO) {
         assertThat(testBook).
-            extracting(ID_FIELD, NAME_FIELD, AUTHOR_NAME_FIELD, GENRE_NAME_FIELD).
+            extracting(ID_FIELD, NAME_FIELD, AUTHOR_NAME_FIELD_PATH, GENRE_NAME_FIELD_PATH).
             containsExactly(actualBookDTO.getId(),
                 actualBookDTO.getName(),
                 actualBookDTO.getAuthor(),

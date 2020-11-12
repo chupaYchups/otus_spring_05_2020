@@ -54,4 +54,12 @@ public class BookServiceImpl implements BookService {
         Book book = bookDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Cannot find book with id: " + id));
         bookDao.delete(book);
     }
+
+    @Override
+    public List<BookDto> getAllBooks() {
+        return bookDao.getAllBooks().
+                stream().
+                map(book -> new BookDto(book.getId(), book.getName(), book.getAuthor().getName(), book.getGenre().getName())).
+                collect(Collectors.toList());
+    }
 }

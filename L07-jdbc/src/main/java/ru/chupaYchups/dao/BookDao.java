@@ -13,4 +13,5 @@ public interface BookDao {
     void delete(Book book);
     void update(Book book);
     List<Book> findBooks(Optional<Author> authorOptional, Optional<Genre> genreOptional, Optional<String> nameOptional);
+    List<Book> getAllBooks();
 }
