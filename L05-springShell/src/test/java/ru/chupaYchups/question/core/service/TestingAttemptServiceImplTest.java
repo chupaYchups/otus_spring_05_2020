@@ -1,25 +1,23 @@
 package ru.chupaYchups.question.core.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.BDDMockito;
 import org.mockito.InOrder;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import ru.chupaYchups.question.config.TestingProps;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.chupaYchups.question.dao.QuestionsDao;
 import ru.chupaYchups.question.model.Question;
 import ru.chupaYchups.question.model.Student;
 import ru.chupaYchups.question.service.*;
 import java.util.Arrays;
-
 import static org.mockito.Mockito.times;
 
-@ExtendWith(MockitoExtension.class)
+
+@SpringBootTest
 @DisplayName("Тестирование того что сервис тестирования корректно отрабатывает (порог успешности 2)")
 class TestingAttemptServiceImplTest {
 
@@ -40,23 +38,17 @@ class TestingAttemptServiceImplTest {
     private static final int QUANTITY_TO_SUCCESS = 2;
     private static final int QUANTITY_OF_QUESTIONS = 3;
 
-    @Mock
+    @MockBean
     private QuestionsDao questionsDao;
-    @Mock
+    @MockBean
     private QuestionOutputService questionOutputService;
-    @Mock
+    @MockBean
     private InputService inputService;
 
+    @Autowired
     private TestingAttemptService testingAttemptService;
-    private InOrder inOrder;
 
-    @BeforeEach
-    void setUp() {
-        TestingProps testingProperties = new TestingProps();
-        testingProperties.setSuccessQty(QUANTITY_TO_SUCCESS);
-        testingAttemptService = new TestingAttemptServiceImpl(questionsDao, questionOutputService, inputService, testingProperties);
-        inOrder = Mockito.inOrder(questionsDao, questionOutputService, inputService);
-    }
+    private InOrder inOrder;
 
     @DisplayName("При результате теста : ")
     @ParameterizedTest(name="{2} правильно из " + QUANTITY_OF_QUESTIONS)
@@ -77,6 +69,7 @@ class TestingAttemptServiceImplTest {
 
         testingAttemptService.doTestingAttempt();
 
+        inOrder = Mockito.inOrder(questionsDao, questionOutputService, inputService);
         inOrder.verify(questionOutputService, times(1)).
             printLocalized(TestingAttemptServiceImpl.HELLO_USER_MSG);
         inOrder.verify(inputService, times(1)).getInput();

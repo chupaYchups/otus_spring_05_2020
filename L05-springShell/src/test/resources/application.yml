@@ -7,4 +7,10 @@ file:
     delimiter: ;
 
 testing:
-  sucess-qty : 3
+  success-qty : 2
+
+spring:
+  shell:
+    interactive:
+      enabled: false
+

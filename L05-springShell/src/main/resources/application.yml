@@ -1,5 +1,5 @@
 application:
-  locale : RU
+  locale : En
 
 file:
     name-property: questions
@@ -7,4 +7,4 @@ file:
     delimiter: ;
 
 testing:
-  sucess-qty : 3
+  success-qty : 3
