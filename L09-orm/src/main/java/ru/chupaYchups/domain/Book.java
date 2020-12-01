@@ -21,12 +21,12 @@ public class Book {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false, unique = true)
     private String name;
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "AUTHOR_ID")
+    @JoinColumn(name = "AUTHOR_ID", nullable = false)
     private Author author;
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "GENRE_ID")
+    @JoinColumn(name = "GENRE_ID", nullable = false)
     private Genre genre;
 }
