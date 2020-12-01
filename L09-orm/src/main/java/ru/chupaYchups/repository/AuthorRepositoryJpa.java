@@ -3,6 +3,7 @@ package ru.chupaYchups.repository;
 import org.springframework.stereotype.Repository;
 import ru.chupaYchups.domain.Author;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -35,7 +36,11 @@ public class AuthorRepositoryJpa implements AuthorRepository {
         TypedQuery<Author> typedQuery = entityManager.createQuery(
                 "select a from Author a where a.name = :name", Author.class);
         typedQuery.setParameter("name", name);
-        return Optional.of(typedQuery.getSingleResult());
+        try {
+            return Optional.of(typedQuery.getSingleResult());
+        } catch (NoResultException exc) {
+            return Optional.empty();
+        }
     }
 
     @Override

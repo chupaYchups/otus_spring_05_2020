@@ -5,11 +5,14 @@ import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Comment;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class CommentRepositoryJpa implements CommentRepository {
+
+    public static final String BOOK_PARAM = "book";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -37,6 +40,8 @@ public class CommentRepositoryJpa implements CommentRepository {
 
     @Override
     public List<Comment> findByBook(Book book) {
-        return null;
+        TypedQuery<Comment> query = entityManager.createQuery("select c from Comment c where c.book = :book", Comment.class);
+        query.setParameter(BOOK_PARAM, book);
+        return query.getResultList();
     }
 }

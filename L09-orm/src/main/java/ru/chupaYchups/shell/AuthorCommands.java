@@ -14,7 +14,7 @@ public class AuthorCommands {
 
     private final AuthorService authorService;
 
-    @ShellMethod(value = "Getting all authors.", key = {"aa", "allauthors"})
+    @ShellMethod(value = "Getting all authors.", key = "all-authors")
     public String getAllAuthors() {
         return authorService.getAllAuthors().
             stream().

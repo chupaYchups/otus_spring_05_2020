@@ -14,6 +14,10 @@ import java.util.Optional;
 @Repository
 public class BookRepositoryJpa implements BookRepository {
 
+    public static final String NAME_PARAM = "name";
+    public static final String AUTHOR_ID_PARAM = "author_id";
+    public static final String GENRE_ID_PARAM = "genre_id";
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -43,23 +47,21 @@ public class BookRepositoryJpa implements BookRepository {
         TypedQuery<Book> typedQuery = entityManager.createQuery(
                 "select b " +
                         "from Book b " +
-                        "join b.author a " +
-                        "join b.genre g " +
-                        "where b.name = :name " +
-                        "and a.id = :author_id " +
-                        "and g.id = :genre_id ", Book.class);
-        nameOptional.ifPresent(name ->
-            typedQuery.setParameter("name", name));
-        authorOptional.ifPresent(author ->
-            typedQuery.setParameter("author_id", author.getId()));
-        genreOptional.ifPresent(genre ->
-            typedQuery.setParameter("genre_id", genre.getId()));
+                        "join fetch b.author a " +
+                        "join fetch b.genre g " +
+                        "where b.name = COALESCE(:name, b.name)" +
+                        "and a.id = COALESCE(:author_id, a.id)" +
+                        "and g.id = COALESCE(:genre_id, g.id)", Book.class);
+        typedQuery.setParameter(NAME_PARAM, nameOptional.orElse(null));
+        typedQuery.setParameter(AUTHOR_ID_PARAM, authorOptional.map(author -> author.getName()).orElse(null));
+        typedQuery.setParameter(GENRE_ID_PARAM, genreOptional.map(genre -> genre.getName()).orElse(null));
+
         return typedQuery.getResultList();
     }
 
     @Override
     public List<Book> getAllBooks() {
-        TypedQuery<Book> typedQuery = entityManager.createQuery("select b from Book b " , Book.class);
+        TypedQuery<Book> typedQuery = entityManager.createQuery("select b from Book b join fetch b.author a join fetch b.genre" , Book.class);
         return typedQuery.getResultList();
     }
 }

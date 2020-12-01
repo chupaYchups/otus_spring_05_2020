@@ -2,7 +2,11 @@ package ru.chupaYchups.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
+import java.util.List;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Data
@@ -21,12 +25,20 @@ public class Book {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "AUTHOR_ID", nullable = false)
     private Author author;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "GENRE_ID", nullable = false)
     private Genre genre;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "BOOK_ID")
+    private List<Comment> comments;
 }

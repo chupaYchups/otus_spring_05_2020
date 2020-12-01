@@ -14,7 +14,7 @@ public class GenreCommands {
 
     private final GenreService genreService;
 
-    @ShellMethod(value = "Getting all genres.", key = {"allgenres", "ag"})
+    @ShellMethod(value = "Getting all genres.", key = "all-genres")
     public String getAllGenres() {
         return genreService.getAllGenres().
             stream().
