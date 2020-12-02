@@ -53,8 +53,8 @@ public class BookRepositoryJpa implements BookRepository {
                         "and a.id = COALESCE(:author_id, a.id)" +
                         "and g.id = COALESCE(:genre_id, g.id)", Book.class);
         typedQuery.setParameter(NAME_PARAM, nameOptional.orElse(null));
-        typedQuery.setParameter(AUTHOR_ID_PARAM, authorOptional.map(author -> author.getName()).orElse(null));
-        typedQuery.setParameter(GENRE_ID_PARAM, genreOptional.map(genre -> genre.getName()).orElse(null));
+        typedQuery.setParameter(AUTHOR_ID_PARAM, authorOptional.map(author -> author.getId()).orElse(null));
+        typedQuery.setParameter(GENRE_ID_PARAM, genreOptional.map(genre -> genre.getId()).orElse(null));
 
         return typedQuery.getResultList();
     }

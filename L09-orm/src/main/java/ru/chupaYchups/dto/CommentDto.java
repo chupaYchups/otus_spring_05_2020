@@ -11,7 +11,7 @@ public class CommentDto {
     @Override
     public String toString() {
         return "Comment - " +
-                "id = '" + commentString + '\'' +
+                "id = '" + commentId + '\'' +
                 ", text = '" + commentString + '\'';
     }
 }
