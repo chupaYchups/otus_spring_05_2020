@@ -1,0 +1,10 @@
+application:
+  locale : En
+
+file:
+    name-property: questions
+    extension: csv
+    delimiter: ;
+
+testing:
+  success-qty : 3
