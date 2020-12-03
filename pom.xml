@@ -21,6 +21,7 @@
         <module>L04-springBoot</module>
         <module>L05-springShell</module>
         <module>L07-jdbc</module>
+        <module>L11-springData</module>
     </modules>
 
     <dependencies>
