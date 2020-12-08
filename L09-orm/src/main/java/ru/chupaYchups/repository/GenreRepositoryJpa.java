@@ -1,7 +1,6 @@
 package ru.chupaYchups.repository;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.chupaYchups.domain.Genre;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
