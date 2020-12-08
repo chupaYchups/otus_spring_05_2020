@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public class GenreRepositoryJpa implements GenreRepository {
 
-    public static final String NAME_PARAM = "name";
+    private static final String NAME_PARAM = "name";
 
     @PersistenceContext
     private EntityManager entityManager;

@@ -11,9 +11,9 @@ import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.dto.BookDto;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +24,19 @@ public class BookServiceImpl implements BookService {
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
 
+    public static class BookDtoMapper implements Function<Book, BookDto> {
+        @Override
+        public BookDto apply(Book book) {
+            return new BookDto(book.getId(),
+                    book.getName(),
+                    book.getAuthor().getName(),
+                    book.getGenre().getName(),
+                    book.getComments().stream().
+                            map(new CommentServiceImpl.CommentDtoMapper()).
+                            collect(Collectors.toList()));
+        }
+    }
+
     @Override
     @Transactional(readOnly = true)
     public List<BookDto> findBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional, Optional<String> nameOptional) {
@@ -31,14 +44,7 @@ public class BookServiceImpl implements BookService {
         Optional<Genre> genreOptional = genreNameOptional.flatMap(genreName -> genreRepository.findByName(genreName));
         return bookDao.findBooks(authorOptional, genreOptional, nameOptional).
             stream().
-            map(book -> new BookDto(book.getId(),
-                book.getName(),
-                book.getAuthor().getName(),
-                book.getGenre().getName(),
-                book.getComments().stream().
-                    map(comment -> new CommentDto(comment.getId(), comment.getCommentString())).
-                    collect(Collectors.toList())
-                )).
+            map(new BookDtoMapper()).
             collect(Collectors.toList());
     }
 
@@ -74,12 +80,7 @@ public class BookServiceImpl implements BookService {
     public List<BookDto> getAllBooks() {
         return bookDao.getAllBooks().
                 stream().
-                map(book -> new BookDto(book.getId(),
-                    book.getName(), book.getAuthor().getName(),
-                    book.getGenre().getName(),
-                    book.getComments().stream().
-                        map(comment -> new CommentDto(comment.getId(), comment.getCommentString())).
-                        collect(Collectors.toList()))).
+                map(new BookDtoMapper()).
                 collect(Collectors.toList());
     }
 }
