@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.*;
 class BookRepositoryJpaTest {
 
     private static final long FIRST_TEST_BOOK_ID = 1l;
-    private static final long SECOND_TEST_BOOK_ID = 1l;
+    private static final long SECOND_TEST_BOOK_ID = 2l;
     private static final long FIRST_TEST_GENRE_ID = 1l;
     private static final long FIRST_TEST_AUTHOR_ID = 1l;
     private static final String TEST_AUTHOR_NAME = "test author name";
