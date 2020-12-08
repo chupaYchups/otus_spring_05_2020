@@ -72,7 +72,7 @@ class AuthorRepositoryJpaTest {
 
         Optional<Author> foundAuthorOptional = authorRepositoryJpa.findById(TEST_AUTHOR_ID_FIRST);
 
-        assertThat(foundAuthorOptional).isNotEmpty().containsSame(persistedAuthor);
+        assertThat(foundAuthorOptional).isNotEmpty().contains(persistedAuthor);
     }
 
     @Test

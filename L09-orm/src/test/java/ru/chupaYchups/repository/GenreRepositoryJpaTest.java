@@ -69,7 +69,7 @@ class GenreRepositoryJpaTest {
 
         Optional<Genre> foundGenreOptional = genreRepositoryJpa.findById(TEST_GENRE_ID_FIRST);
 
-        assertThat(foundGenreOptional).isNotEmpty().containsSame(persistedGenre);
+        assertThat(foundGenreOptional).isNotEmpty().contains(persistedGenre);
     }
 
     @Test
