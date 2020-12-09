@@ -2,14 +2,21 @@ spring:
   datasource:
     url: jdbc:h2:mem:testdb
     initialization-mode: always
-
+    data: testData.sql
   jpa:
     generate-ddl: false
+    #generate-ddl: true
     hibernate:
       ddl-auto: none
+      #ddl-auto: create-drop
 
-    show-sql: true
+    #show-sql: true
+  shell:
+    interactive:
+      enabled: false
 
 logging:
   level:
-    ROOT: ERROR
+    ROOT: DEBUG
+
+
