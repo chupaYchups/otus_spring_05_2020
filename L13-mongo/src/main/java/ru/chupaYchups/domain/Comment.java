@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Data
 @NoArgsConstructor
-@Document
+@Document(collection = "comments")
 public class Comment {
 
     public Comment(String commentString, Book book) {

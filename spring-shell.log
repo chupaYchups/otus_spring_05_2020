@@ -173,3 +173,9 @@
 1606904898151:update-comment --cid 8 --t my new comment sex
 1606904911420:update-comment --cid 8 --t 'my new comment sex'
 1606904919882:all-books
+1607533719814:all-authors
+1607534319624:all-genres
+1607534325006:all-authors
+1607535197860:all-books
+1607535202763:stacktrace
+1607535269007:all-books

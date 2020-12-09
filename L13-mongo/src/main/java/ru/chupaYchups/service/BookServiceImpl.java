@@ -11,8 +11,11 @@ import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.dto.BookDto;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -24,6 +27,21 @@ public class BookServiceImpl implements BookService {
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
 
+    public static class BookDtoMapper implements Function<Book, BookDto> {
+        @Override
+        public BookDto apply(Book book) {
+            return new BookDto(book.getId(),
+                    book.getName(),
+                    book.getAuthor().getName(),
+                    book.getGenre().getName(),
+                    book.getComments() != null ?
+                        book.getComments().stream().
+                            map(new CommentServiceImpl.CommentDtoMapper()).
+                            collect(Collectors.toList())
+                        : Collections.emptyList());
+        }
+    }
+
     @Override
     @Transactional(readOnly = true)
     public List<BookDto> findBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional, Optional<String> nameOptional) {
@@ -31,14 +49,7 @@ public class BookServiceImpl implements BookService {
         Optional<Genre> genreOptional = genreNameOptional.flatMap(genreName -> genreRepository.findByName(genreName));
         return bookRepository.findAllByAuthorOrGenreOrName(nameOptional.get(),authorOptional.get(), genreOptional.get()).
             stream().
-            map(book -> new BookDto(book.getId(),
-                book.getName(),
-                book.getAuthor().getName(),
-                book.getGenre().getName(),
-                book.getComments().stream().
-                    map(comment -> new CommentDto(comment.getId(), comment.getCommentString())).
-                    collect(Collectors.toList())
-                )).
+            map(new BookDtoMapper()).
             collect(Collectors.toList());
     }
 
@@ -73,12 +84,7 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     public List<BookDto> getAllBooks() {
         return StreamSupport.stream(bookRepository.findAll().spliterator(), false).
-                map(book -> new BookDto(book.getId(),
-                    book.getName(), book.getAuthor().getName(),
-                    book.getGenre().getName(),
-                    book.getComments().stream().
-                        map(comment -> new CommentDto(comment.getId(), comment.getCommentString())).
-                        collect(Collectors.toList()))).
+                map(new BookDtoMapper()).
                 collect(Collectors.toList());
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Data
 @NoArgsConstructor
-@Document
+@Document(collection = "books")
 public class Book {
 
     public Book(String name, Author author, Genre genre) {
@@ -19,7 +19,7 @@ public class Book {
     }
 
     @Id
-    private Long id;
+    private String id;
 
     private String name;
 

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Data
 public class BookDto {
 
-    private final long id;
+    private final String id;
     private final String name;
     private final String author;
     private final String genre;

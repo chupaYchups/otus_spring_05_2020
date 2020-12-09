@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Data
 @NoArgsConstructor
-@Document
+@Document(collection = "authors")
 public class Author {
 
     public Author(String name) {
@@ -16,7 +16,7 @@ public class Author {
     }
 
     @Id
-    private Long id;
+    private String id;
 
     private String name;
 }
