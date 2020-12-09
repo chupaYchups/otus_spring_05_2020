@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -14,9 +13,9 @@ import java.util.Optional;
 @Repository
 public class BookRepositoryJpa implements BookRepository {
 
-    public static final String NAME_PARAM = "name";
-    public static final String AUTHOR_ID_PARAM = "author_id";
-    public static final String GENRE_ID_PARAM = "genre_id";
+    private static final String NAME_PARAM = "name";
+    private static final String AUTHOR_ID_PARAM = "author_id";
+    private static final String GENRE_ID_PARAM = "genre_id";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -61,7 +60,10 @@ public class BookRepositoryJpa implements BookRepository {
 
     @Override
     public List<Book> getAllBooks() {
-        TypedQuery<Book> typedQuery = entityManager.createQuery("select b from Book b join fetch b.author a join fetch b.genre" , Book.class);
+        TypedQuery<Book> typedQuery = entityManager.createQuery("select b " +
+        "from Book b " +
+        "join fetch b.author a " +
+        "join fetch b.genre" , Book.class);
         return typedQuery.getResultList();
     }
 }

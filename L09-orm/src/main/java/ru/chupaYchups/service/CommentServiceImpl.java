@@ -9,6 +9,7 @@ import ru.chupaYchups.dto.CommentDto;
 import ru.chupaYchups.repository.BookRepository;
 import ru.chupaYchups.repository.CommentRepository;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -18,6 +19,13 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final BookRepository bookRepository;
 
+    static class CommentDtoMapper implements Function<Comment, CommentDto> {
+        @Override
+        public CommentDto apply(Comment comment) {
+            return new CommentDto(comment.getId(), comment.getCommentString());
+        }
+    }
+
     @Override
     @Transactional(readOnly = true)
     public List<CommentDto> getBookComments(long bookId) {
@@ -25,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
             orElseThrow(() -> new IllegalArgumentException("Cannot find book with id " + bookId));
         return book.getComments().
             stream().
-            map(comment -> new CommentDto(comment.getId(), comment.getCommentString())).
+            map(new CommentDtoMapper()).
             collect(Collectors.toList());
     }
 

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public class CommentRepositoryJpa implements CommentRepository {
 
-    public static final String BOOK_PARAM = "book";
+    private static final String BOOK_PARAM = "book";
 
     @PersistenceContext
     private EntityManager entityManager;

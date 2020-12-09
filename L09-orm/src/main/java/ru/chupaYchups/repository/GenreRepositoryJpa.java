@@ -1,7 +1,6 @@
 package ru.chupaYchups.repository;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.chupaYchups.domain.Genre;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -13,7 +12,7 @@ import java.util.Optional;
 @Repository
 public class GenreRepositoryJpa implements GenreRepository {
 
-    public static final String NAME_PARAM = "name";
+    private static final String NAME_PARAM = "name";
 
     @PersistenceContext
     private EntityManager entityManager;

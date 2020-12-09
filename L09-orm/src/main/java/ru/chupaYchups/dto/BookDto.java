@@ -2,8 +2,10 @@ package ru.chupaYchups.dto;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import ru.chupaYchups.domain.Book;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
