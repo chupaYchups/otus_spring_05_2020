@@ -88,7 +88,7 @@ class BookRepositoryJpaTest {
         Genre testBookGenre = testEntityManager.find(Genre.class, FIRST_TEST_GENRE_ID);
         Author testBookAuthor = testEntityManager.find(Author.class, FIRST_TEST_AUTHOR_ID);
 
-        List<Book> foundBooks = bookRepository.findAllByParams(null, testBookAuthor, testBookGenre);
+        List<Book> foundBooks = bookRepository.findAllByAuthorOrGenreOrName(null, testBookAuthor, testBookGenre);
 
         assertThat(foundBooks).isNotEmpty().hasSize(1).contains(testBook);
     }

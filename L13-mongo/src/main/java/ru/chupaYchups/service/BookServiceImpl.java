@@ -29,7 +29,7 @@ public class BookServiceImpl implements BookService {
     public List<BookDto> findBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional, Optional<String> nameOptional) {
         Optional<Author> authorOptional = authorNameOptional.flatMap(authorName -> authorRepository.findByName(authorName));
         Optional<Genre> genreOptional = genreNameOptional.flatMap(genreName -> genreRepository.findByName(genreName));
-        return bookRepository.findAllByParams(nameOptional.get(),authorOptional.get(), genreOptional.get()).
+        return bookRepository.findAllByAuthorOrGenreOrName(nameOptional.get(),authorOptional.get(), genreOptional.get()).
             stream().
             map(book -> new BookDto(book.getId(),
                 book.getName(),

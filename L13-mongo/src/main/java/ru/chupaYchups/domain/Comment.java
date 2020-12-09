@@ -2,13 +2,13 @@ package ru.chupaYchups.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name = "COMMENT")
+@Document
 public class Comment {
 
     public Comment(String commentString, Book book) {
@@ -17,14 +17,9 @@ public class Comment {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "COMMENT_STRING", nullable = false)
     private String commentString;
 
-    @ManyToOne
-    @JoinColumn(name = "BOOK_ID", nullable = false)
     private Book book;
 }
