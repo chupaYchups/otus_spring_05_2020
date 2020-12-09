@@ -11,7 +11,6 @@ import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.dto.BookDto;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,7 +29,7 @@ public class BookServiceImpl implements BookService {
     public List<BookDto> findBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional, Optional<String> nameOptional) {
         Optional<Author> authorOptional = authorNameOptional.flatMap(authorName -> authorRepository.findByName(authorName));
         Optional<Genre> genreOptional = genreNameOptional.flatMap(genreName -> genreRepository.findByName(genreName));
-        return bookRepository.findAllByNameAndAuthorAndGenre(nameOptional,authorOptional, genreOptional).
+        return bookRepository.findAllByParams(nameOptional.get(),authorOptional.get(), genreOptional.get()).
             stream().
             map(book -> new BookDto(book.getId(),
                 book.getName(),

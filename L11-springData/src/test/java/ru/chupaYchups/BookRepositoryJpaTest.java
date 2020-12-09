@@ -1,19 +1,18 @@
+package ru.chupaYchups;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.repository.BookRepository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -53,18 +52,18 @@ class BookRepositoryJpaTest {
     @Test
     @DisplayName("сохраняет новую книгу")
     void testThatCorrectlyPersistNewBook() {
-        Author newAuthor = new Author(TEST_AUTHOR_NAME);
-        Genre newGenre = new Genre(TEST_GENRE_NAME);
-        Book newBook = new Book(TEST_BOOK_NAME, newAuthor, newGenre);
+        Author testAuthor = testEntityManager.find(Author.class, FIRST_TEST_AUTHOR_ID);
+        Genre testGenre = testEntityManager.find(Genre.class, FIRST_TEST_GENRE_ID);
+        Book newBook = new Book(TEST_BOOK_NAME, testAuthor, testGenre);
 
         Book returnedBook = bookRepository.save(newBook);
 
         assertThat(returnedBook.getId()).isNotNull();
         assertThat(returnedBook).isEqualToIgnoringNullFields(newBook);
 
-        Book savedBook = testEntityManager.find(Book.class, returnedBook.getId());
-        assertThat(savedBook.getAuthor()).isEqualToIgnoringNullFields(newAuthor);
-        assertThat(savedBook.getGenre()).isEqualToIgnoringNullFields(newGenre);
+        Book persistedBook = testEntityManager.find(Book.class, returnedBook.getId());
+        assertThat(persistedBook.getAuthor()).isEqualToComparingFieldByField(testAuthor);
+        assertThat(persistedBook.getGenre()).isEqualToComparingFieldByField(testGenre);
     }
 
     @Test
@@ -78,8 +77,8 @@ class BookRepositoryJpaTest {
 
         assertThat(returnedBook).isEqualToIgnoringNullFields(testBook);
 
-        Book savedBook = testEntityManager.find(Book.class, returnedBook.getId());
-        assertThat(savedBook).isEqualToComparingFieldByField(testBook);
+        Book persistedBook = testEntityManager.find(Book.class, returnedBook.getId());
+        assertThat(persistedBook).isEqualToComparingFieldByField(testBook);
     }
 
     @Test
@@ -89,7 +88,7 @@ class BookRepositoryJpaTest {
         Genre testBookGenre = testEntityManager.find(Genre.class, FIRST_TEST_GENRE_ID);
         Author testBookAuthor = testEntityManager.find(Author.class, FIRST_TEST_AUTHOR_ID);
 
-        List<Book> foundBooks = bookRepository.findAllByNameAndAuthorAndGenre(Optional.empty(), Optional.of(testBookAuthor), Optional.of(testBookGenre));
+        List<Book> foundBooks = bookRepository.findAllByParams(null, testBookAuthor, testBookGenre);
 
         assertThat(foundBooks).isNotEmpty().hasSize(1).contains(testBook);
     }
