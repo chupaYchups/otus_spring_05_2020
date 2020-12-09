@@ -28,14 +28,14 @@ class GenreRepositoryJpaTest {
     private TestEntityManager testEntityManager;
 
     @Autowired
-    private GenreRepositoryJpa genreRepositoryJpa;
+    private GenreRepository genreRepository;
 
     @Test
     @DisplayName("сохраняет новую сущность")
     void testThatRepositoryCorrectlySaveNewGenre() {
         Genre genreToSave = new Genre(TEST_GENRE_NAME);
 
-        Genre returnedGenre = genreRepositoryJpa.save(genreToSave);
+        Genre returnedGenre = genreRepository.save(genreToSave);
 
         assertThat(returnedGenre).
                 isNotNull().
@@ -53,7 +53,7 @@ class GenreRepositoryJpaTest {
         Genre genreToUpdate = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
         genreToUpdate.setName(TEST_GENRE_NEW_NAME);
 
-        Genre returnedGenre = genreRepositoryJpa.save(genreToUpdate);
+        Genre returnedGenre = genreRepository.save(genreToUpdate);
 
         assertThat(returnedGenre).isEqualTo(genreToUpdate);
 
@@ -67,7 +67,7 @@ class GenreRepositoryJpaTest {
     void testThatRepositoryCorrectlyFindGenreById() {
         Genre persistedGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
 
-        Optional<Genre> foundGenreOptional = genreRepositoryJpa.findById(TEST_GENRE_ID_FIRST);
+        Optional<Genre> foundGenreOptional = genreRepository.findById(TEST_GENRE_ID_FIRST);
 
         assertThat(foundGenreOptional).isNotEmpty().contains(persistedGenre);
     }
@@ -77,7 +77,7 @@ class GenreRepositoryJpaTest {
     void testThatRepositoryCorrectlyFindGenreByName() {
         Genre persistedgenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
 
-        Optional<Genre> foundGenreOptional = genreRepositoryJpa.findByName(TEST_GENRE_NAME_FIRST);
+        Optional<Genre> foundGenreOptional = genreRepository.findByName(TEST_GENRE_NAME_FIRST);
 
         assertThat(foundGenreOptional).isNotEmpty().containsSame(persistedgenre);
     }
@@ -88,7 +88,7 @@ class GenreRepositoryJpaTest {
         Genre tolstoyGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
         Genre pushkinGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_SECOND);
 
-        List<Genre> genreList = genreRepositoryJpa.getAll();
+        List<Genre> genreList = genreRepository.getAll();
 
         assertThat(genreList).hasSize(2).contains(tolstoyGenre, pushkinGenre);
     }
@@ -98,7 +98,7 @@ class GenreRepositoryJpaTest {
     void testThatRepositoryCorrectlyDeleteGenre() {
         Genre genreToDelete = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
 
-        genreRepositoryJpa.delete(genreToDelete);
+        genreRepository.delete(genreToDelete);
 
         assertThat(testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST)).isNull();
     }
