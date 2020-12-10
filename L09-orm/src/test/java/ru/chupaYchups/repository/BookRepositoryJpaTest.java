@@ -37,8 +37,8 @@ class BookRepositoryJpaTest {
     @DisplayName("ищет книгу по идентификатору")
     void testThatCorrectlyFindBookById() {
         Book testBook = testEntityManager.find(Book.class, FIRST_TEST_BOOK_ID);
-        Optional<Book> foundBookOptional = bookRepository.findById(FIRST_TEST_BOOK_ID);
-        assertThat(foundBookOptional).isPresent().get().isEqualToComparingFieldByField(testBook);
+        Book foundBook = bookRepository.findById(FIRST_TEST_BOOK_ID);
+        assertThat(foundBook).isEqualToComparingFieldByField(testBook);
     }
 
     @Test

@@ -29,8 +29,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional(readOnly = true)
     public List<CommentDto> getBookComments(long bookId) {
-        Book book = bookRepository.findById(bookId).
-            orElseThrow(() -> new IllegalArgumentException("Cannot find book with id " + bookId));
+        Book book = bookRepository.findById(bookId);
         return book.getComments().
             stream().
             map(new CommentDtoMapper()).
@@ -40,24 +39,21 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void deleteComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).
-            orElseThrow(() -> new IllegalArgumentException("Cannot find comment with id " + commentId));
+        Comment comment = commentRepository.findById(commentId);
         commentRepository.delete(comment);
     }
 
     @Override
     @Transactional
     public void addComment(Long bookId, String commentText) {
-        Book book = bookRepository.findById(bookId).
-                orElseThrow(() -> new IllegalArgumentException("Cannot find book with id " + bookId));
+        Book book = bookRepository.findById(bookId);
         commentRepository.save(new Comment(commentText, book));
     }
 
     @Override
     @Transactional
     public void updateComment(Long commentId, String text) {
-        Comment comment = commentRepository.findById(commentId).
-                orElseThrow(() -> new IllegalArgumentException("Cannot find comment with id " + commentId));
+        Comment comment = commentRepository.findById(commentId);
         comment.setCommentString(text);
         commentRepository.save(comment);
     }

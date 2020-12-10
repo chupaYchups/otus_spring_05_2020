@@ -23,7 +23,6 @@ public class GenreRepositoryJpa implements GenreRepository {
             return entityManager.merge(genre);
         } else {
             entityManager.persist(genre);
-            entityManager.refresh(genre);
             return genre;
         }
     }

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 public class CommentDto {
 
-    private final Long commentId;
+    private final long commentId;
     private final String commentString;
 
     @Override

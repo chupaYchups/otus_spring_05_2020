@@ -56,9 +56,9 @@ class CommentRepositoryJpaTest {
     @Test
     @DisplayName("ищет комментарий по идентификатору")
     void testThatRepositoryCorrectlyFindCommentById() {
-        Optional<Comment> testCommentOptional = commentRepository.findById(TEST_COMMENT_ID);
+        Comment testComment = commentRepository.findById(TEST_COMMENT_ID);
         Comment foundComment = testEntityManager.find(Comment.class, TEST_COMMENT_ID);
-        assertThat(testCommentOptional).isPresent().get().isEqualToComparingFieldByField(foundComment);
+        assertThat(testComment).isEqualToComparingFieldByField(foundComment);
     }
 
     @Test
@@ -76,7 +76,6 @@ class CommentRepositoryJpaTest {
         Book testBook = testEntityManager.find(Book.class, TEST_BOOK_ID);
         Comment testCommentFirst = testEntityManager.find(Comment.class, TEST_COMMENT_FIRST_ID);
         Comment testCommentSecond = testEntityManager.find(Comment.class, TEST_COMMENT_SECOND_ID);
-        List<Comment> bookComments = commentRepository.findByBook(testBook);
-        assertThat(bookComments).isNotEmpty().contains(testCommentFirst, testCommentSecond);
+        assertThat(testBook.getComments()).isNotEmpty().contains(testCommentFirst, testCommentSecond);
     }
 }
