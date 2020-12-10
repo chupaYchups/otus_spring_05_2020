@@ -53,12 +53,12 @@ public class DatabaseChangeLog {
             genreRepository.findByName(NOVEL_GENRE_NAME).orElseThrow()));
 
         bookRepository.save(new Book(RUSLAN_AND_LUDMILA_BOOK_NAME,
-                authorRepository.findByName(PUSHKIN_AUTHOR_NAME).orElseThrow(),
-                genreRepository.findByName(STORY_GENRE_NAME).orElseThrow()));
+            authorRepository.findByName(PUSHKIN_AUTHOR_NAME).orElseThrow(),
+            genreRepository.findByName(STORY_GENRE_NAME).orElseThrow()));
 
 
         bookRepository.save(new Book(CRIME_AND_PUNISHMENT_BOOK_NAME,
-                authorRepository.findByName(DOSTOEVSKY_AUTHOR_NAME).orElseThrow(),
-                genreRepository.findByName(DETECTIVE_GENRE_NAME).orElseThrow()));
+            authorRepository.findByName(DOSTOEVSKY_AUTHOR_NAME).orElseThrow(),
+            genreRepository.findByName(DETECTIVE_GENRE_NAME).orElseThrow()));
     }
 }

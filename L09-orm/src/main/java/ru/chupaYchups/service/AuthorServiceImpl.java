@@ -4,11 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.chupaYchups.domain.Author;
-import ru.chupaYchups.domain.Comment;
-import ru.chupaYchups.dto.CommentDto;
 import ru.chupaYchups.repository.AuthorRepository;
 import ru.chupaYchups.dto.AuthorDto;
-
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
