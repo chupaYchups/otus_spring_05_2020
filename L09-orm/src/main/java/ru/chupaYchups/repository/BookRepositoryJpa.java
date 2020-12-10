@@ -18,6 +18,7 @@ public class BookRepositoryJpa implements BookRepository {
     private static final String NAME_PARAM = "name";
     private static final String AUTHOR_PARAM = "author";
     private static final String GENRE_PARAM = "genre";
+    public static final String JAVAX_PERSISTENCE_FETCHGRAPH_HINT = "javax.persistence.fetchgraph";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -48,12 +49,10 @@ public class BookRepositoryJpa implements BookRepository {
         TypedQuery<Book> typedQuery = entityManager.createQuery(
                 "select b " +
                         "from Book b " +
-                        "join fetch b.author a " +
-                        "join fetch b.genre g " +
                         "where b.name = COALESCE(:name, b.name)" +
                         "and b.author = COALESCE(:author, b.author)" +
                         "and b.genre = COALESCE(:genre, b.genre)", Book.class);
-        typedQuery.setHint("javax.persistence.fetchgraph", entityManager.getEntityGraph("book's-author-genre-entity-graph"));
+        typedQuery.setHint(JAVAX_PERSISTENCE_FETCHGRAPH_HINT, entityManager.getEntityGraph("book's-author-genre-entity-graph"));
         typedQuery.setParameter(NAME_PARAM, nameOptional.orElse(null));
         typedQuery.setParameter(AUTHOR_PARAM, authorOptional.orElse(null));
         typedQuery.setParameter(GENRE_PARAM, genreOptional.orElse(null));

@@ -11,8 +11,6 @@ import java.util.Optional;
 @Repository
 public class CommentRepositoryJpa implements CommentRepository {
 
-    private static final String BOOK_PARAM = "book";
-
     @PersistenceContext
     private EntityManager entityManager;
 
