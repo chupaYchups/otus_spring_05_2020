@@ -74,11 +74,11 @@ class GenreRepositoryJpaTest {
     @Test
     @DisplayName("находит жанр по имени")
     void testThatRepositoryCorrectlyFindGenreByName() {
-        Genre persistedgenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
+        Genre persistedGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
 
         Optional<Genre> foundGenreOptional = genreRepository.findByName(TEST_GENRE_NAME_FIRST);
 
-        assertThat(foundGenreOptional).isNotEmpty().contains(persistedgenre);
+        assertThat(foundGenreOptional).isNotEmpty().contains(persistedGenre);
     }
 
     @Test
