@@ -13,6 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "BOOK")
+@NamedEntityGraph(name = "book's-author-genre-entity-graph",
+        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
 public class Book {
 
     public Book(String name, Author author, Genre genre) {
@@ -29,11 +31,11 @@ public class Book {
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AUTHOR_ID", nullable = false)
     private Author author;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "GENRE_ID", nullable = false)
     private Genre genre;
 

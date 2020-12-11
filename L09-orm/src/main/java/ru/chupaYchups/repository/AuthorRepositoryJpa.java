@@ -21,7 +21,6 @@ public class AuthorRepositoryJpa implements AuthorRepository {
             return entityManager.merge(author);
         } else {
             entityManager.persist(author);
-            entityManager.refresh(author);
             return author;
         }
     }

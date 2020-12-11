@@ -1,7 +1,6 @@
 package ru.chupaYchups.service;
 
 import ru.chupaYchups.dto.CommentDto;
-
 import java.util.List;
 
 public interface CommentService {

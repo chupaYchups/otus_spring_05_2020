@@ -19,7 +19,7 @@ public class GenreServiceImpl implements GenreService {
     private static class GenreDtoMapper implements Function<Genre, GenreDto> {
         @Override
         public GenreDto apply(Genre genre) {
-            return new GenreDto(genre.getName());
+            return new GenreDto(genre.getId(), genre.getName());
         }
     }
 
