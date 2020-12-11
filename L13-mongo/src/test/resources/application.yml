@@ -1,22 +1,24 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
-    initialization-mode: always
-    data: testData.sql
-  jpa:
-    generate-ddl: false
-    #generate-ddl: true
-    hibernate:
-      ddl-auto: none
-      #ddl-auto: create-drop
-
-    #show-sql: true
+  data:
+    mongodb:
+#      authentication-database: none
+      database: library
+#      port: 27017
+#      host: localhost
   shell:
     interactive:
       enabled: false
 
 logging:
   level:
-    ROOT: DEBUG
+    ROOT: INFO
+
+
+mongock:
+  runner-type: "ApplicationRunner" # default
+#  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.chupaYchups.mongock.test
+
 
 
