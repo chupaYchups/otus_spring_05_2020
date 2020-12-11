@@ -20,6 +20,7 @@ class AuthorRepositoryMongoTest {
 
     public static final String NAME_FIELD = "name";
     public static final String TEST_AUTHOR_NEW_NAME = "test author new name";
+    public static final String TEST_AUTHOR_NAME = "test author name";
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -30,7 +31,7 @@ class AuthorRepositoryMongoTest {
     @Test
     @DisplayName("сохраняет новую сущность")
     void testThatRepositoryCorrectlySaveNewAuthor() {
-        Author authorToSave = new Author(TOLSTOY_AUTHOR_NAME);
+        Author authorToSave = new Author(TEST_AUTHOR_NAME);
 
         Author returnedAuthor = authorRepository.save(authorToSave);
 

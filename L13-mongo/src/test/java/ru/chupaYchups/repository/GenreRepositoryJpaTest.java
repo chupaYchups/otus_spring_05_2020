@@ -7,9 +7,10 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.repository.GenreRepository;
-
+import static ru.chupaYchups.mongock.test.TestDatabaseChangeLog.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,16 +22,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Тестирование того, что репозиторий жанров корректно")
 class GenreRepositoryJpaTest {
 
+    private static final String TEST_GENRE_NAME = "test genre name";
+    private static final String TEST_GENRE_NEW_NAME = "test genre new name";
+    private static final String NAME_FIELD = "name";
+
 /*    private final static long TEST_GENRE_ID_FIRST = 1l;
     private final static String TEST_GENRE_NAME_FIRST = "Detective";
 
     private final static long TEST_GENRE_ID_SECOND = 2l;
-    public static final String TEST_GENRE_NAME = "test genre name";
-    public static final String NAME_FIELD = "name";
-    public static final String TEST_GENRE_NEW_NAME = "test genre new name";
+
+
+    */
 
     @Autowired
-    private TestEntityManager testEntityManager;
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     private GenreRepository genreRepository;
@@ -47,7 +52,7 @@ class GenreRepositoryJpaTest {
                 hasNoNullFieldsOrProperties().
                 hasFieldOrPropertyWithValue(NAME_FIELD, genreToSave.getName());
 
-        Genre persistedGenre = testEntityManager.find(Genre.class, returnedGenre.getId());
+        Genre persistedGenre = mongoTemplate.findById(returnedGenre.getId(), Genre.class);
 
         assertThat(persistedGenre).isNotNull().isEqualToComparingFieldByField(returnedGenre);
     }
@@ -55,14 +60,14 @@ class GenreRepositoryJpaTest {
     @Test
     @DisplayName("обновляет сущность")
     void testThatRepositoryCorrectlyUpdateGenre() {
-        Genre genreToUpdate = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
+        Genre genreToUpdate = mongoTemplate.findById(NOVEL_GENRE_ID, Genre.class);
         genreToUpdate.setName(TEST_GENRE_NEW_NAME);
 
         Genre returnedGenre = genreRepository.save(genreToUpdate);
 
         assertThat(returnedGenre).isEqualTo(genreToUpdate);
 
-        Genre persistedGenre = testEntityManager.find(Genre.class, genreToUpdate.getId());
+        Genre persistedGenre = mongoTemplate.findById(genreToUpdate.getId(), Genre.class);
 
         assertThat(persistedGenre).isNotNull().isEqualToComparingFieldByField(genreToUpdate);
     }
@@ -70,9 +75,9 @@ class GenreRepositoryJpaTest {
     @Test
     @DisplayName("находит жанр по идентификатору")
     void testThatRepositoryCorrectlyFindGenreById() {
-        Genre persistedGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
+        Genre persistedGenre = mongoTemplate.findById(NOVEL_GENRE_ID, Genre.class);
 
-        Optional<Genre> foundGenreOptional = genreRepository.findById(TEST_GENRE_ID_FIRST);
+        Optional<Genre> foundGenreOptional = genreRepository.findById(NOVEL_GENRE_ID);
 
         assertThat(foundGenreOptional).isNotEmpty().contains(persistedGenre);
     }
@@ -80,31 +85,31 @@ class GenreRepositoryJpaTest {
     @Test
     @DisplayName("находит жанр по имени")
     void testThatRepositoryCorrectlyFindGenreByName() {
-        Genre persistedgenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
+        Genre persistedGenre = mongoTemplate.findById(NOVEL_GENRE_ID, Genre.class);
 
-        Optional<Genre> foundGenreOptional = genreRepository.findByName(TEST_GENRE_NAME_FIRST);
+        Optional<Genre> foundGenreOptional = genreRepository.findByName(NOVEL_GENRE_NAME);
 
-        assertThat(foundGenreOptional).isNotEmpty().containsSame(persistedgenre);
+        assertThat(foundGenreOptional).isNotEmpty().contains(persistedGenre);
     }
 
     @Test
     @DisplayName("получает все жанры")
     void testThatRepositoryCorrectlyGetAllGenres() {
-        Genre tolstoyGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
-        Genre pushkinGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_SECOND);
+        Genre novelGenre = mongoTemplate.findById(NOVEL_GENRE_ID, Genre.class);
+        Genre storyGenre = mongoTemplate.findById(STORY_GENRE_ID, Genre.class);
 
         List<Genre> genreList = StreamSupport.stream(genreRepository.findAll().spliterator(), false).collect(Collectors.toList());
 
-        assertThat(genreList).hasSize(2).contains(tolstoyGenre, pushkinGenre);
+        assertThat(genreList).hasSize(2).contains(novelGenre, storyGenre);
     }
 
     @Test
     @DisplayName("удаляет жанр")
     void testThatRepositoryCorrectlyDeleteGenre() {
-        Genre genreToDelete = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
+        Genre genreToDelete = mongoTemplate.findById(NOVEL_GENRE_ID, Genre.class);
 
         genreRepository.delete(genreToDelete);
 
-        assertThat(testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST)).isNull();
-    }*/
+        assertThat(mongoTemplate.findById(NOVEL_GENRE_ID, Genre.class)).isNull();
+    }
 }
