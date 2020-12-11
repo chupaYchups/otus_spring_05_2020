@@ -18,11 +18,10 @@ class GenreRepositoryJpaTest {
 
     private final static long TEST_GENRE_ID_FIRST = 1l;
     private final static String TEST_GENRE_NAME_FIRST = "Detective";
-
     private final static long TEST_GENRE_ID_SECOND = 2l;
-    public static final String TEST_GENRE_NAME = "test genre name";
-    public static final String NAME_FIELD = "name";
-    public static final String TEST_GENRE_NEW_NAME = "test genre new name";
+    private static final String TEST_GENRE_NAME = "test genre name";
+    private static final String NAME_FIELD = "name";
+    private static final String TEST_GENRE_NEW_NAME = "test genre new name";
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -79,18 +78,18 @@ class GenreRepositoryJpaTest {
 
         Optional<Genre> foundGenreOptional = genreRepository.findByName(TEST_GENRE_NAME_FIRST);
 
-        assertThat(foundGenreOptional).isNotEmpty().containsSame(persistedgenre);
+        assertThat(foundGenreOptional).isNotEmpty().contains(persistedgenre);
     }
 
     @Test
     @DisplayName("получает все жанры")
     void testThatRepositoryCorrectlyGetAllGenres() {
-        Genre tolstoyGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
-        Genre pushkinGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_SECOND);
+        Genre firstGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_FIRST);
+        Genre secondGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID_SECOND);
 
         List<Genre> genreList = genreRepository.getAll();
 
-        assertThat(genreList).hasSize(2).contains(tolstoyGenre, pushkinGenre);
+        assertThat(genreList).hasSize(2).contains(firstGenre, secondGenre);
     }
 
     @Test
