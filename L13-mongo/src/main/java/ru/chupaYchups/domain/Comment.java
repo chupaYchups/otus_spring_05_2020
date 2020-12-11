@@ -17,7 +17,7 @@ public class Comment {
     }
 
     @Id
-    private Long id;
+    private String id;
 
     private String commentString;
 

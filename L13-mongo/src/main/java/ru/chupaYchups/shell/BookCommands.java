@@ -40,7 +40,7 @@ public class BookCommands {
     }
 
     @ShellMethod(value = "Updating book by identificator.", key ="update-book")
-    public String updateBookById(@ShellOption Long id,
+    public String updateBookById(@ShellOption String id,
             @ShellOption(value = {"--n", "--name"}, defaultValue = ShellOption.NULL)String name,
             @ShellOption(value = {"--a", "--author"}, defaultValue = ShellOption.NULL)String author,
             @ShellOption(value = {"--g", "--genre"}, defaultValue = ShellOption.NULL)String genre) {
@@ -50,7 +50,7 @@ public class BookCommands {
     }
 
     @ShellMethod(value = "Deleting book by identificator.", key = "delete-book")
-    public String deleteBookById(Long id) {
+    public String deleteBookById(String id) {
         bookService.deleteBookById(id);
         return "Book with id '" + id + "' sucessfully deleted";
     }

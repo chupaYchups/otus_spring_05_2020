@@ -45,8 +45,9 @@ class AuthorRepositoryMongoTest {
         assertThat(persistedAuthor).isNotNull().isEqualToComparingFieldByField(returnedAuthor);
     }
 
-   @Test
+    @Test
     @DisplayName("обновляет сущность")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void testThatRepositoryCorrectlyUpdateAuthor() {
         Author authorToUpdate = mongoTemplate.findById(TOLSTOY_AUTHOR_ID, Author.class);
         authorToUpdate.setName(TEST_AUTHOR_NEW_NAME);
@@ -63,7 +64,6 @@ class AuthorRepositoryMongoTest {
 
     @Test
     @DisplayName("находит автора по идентификатору")
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     void testThatRepositoryCorrectlyFindAuthorById() {
         Author persistedAuthor = mongoTemplate.findById(TOLSTOY_AUTHOR_ID, Author.class);
 
@@ -72,6 +72,17 @@ class AuthorRepositoryMongoTest {
         assertThat(foundAuthorOptional).isNotEmpty().contains(persistedAuthor);
     }
 
+
+    @Test
+    @DisplayName("удаляет автора")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void testThatRepositoryCorrectlyDeleteAuthor() {
+        Author authorToDelete = mongoTemplate.findById(TOLSTOY_AUTHOR_ID, Author.class);
+
+        authorRepository.delete(authorToDelete);
+
+        assertThat(mongoTemplate.findById(TOLSTOY_AUTHOR_ID, Author.class)).isNull();
+    }
 
     @Test
     @DisplayName("находит автора по имени")
@@ -93,15 +104,5 @@ class AuthorRepositoryMongoTest {
         List<Author> authorList = StreamSupport.stream(authorRepository.findAll().spliterator(), false).collect(Collectors.toList());
 
         assertThat(authorList).hasSize(2).contains(tolstoyAuthor, pushkinAuthor);
-    }
-
-    @Test
-    @DisplayName("удаляет автора")
-    void testThatRepositoryCorrectlyDeleteAuthor() {
-        Author authorToDelete = mongoTemplate.findById(TOLSTOY_AUTHOR_ID, Author.class);
-
-        authorRepository.delete(authorToDelete);
-
-        assertThat(mongoTemplate.findById(TOLSTOY_AUTHOR_ID, Author.class)).isNull();
     }
 }

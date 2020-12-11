@@ -4,12 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.chupaYchups.domain.Genre;
-import ru.chupaYchups.repository.GenreRepository;
 import static ru.chupaYchups.mongock.test.TestDatabaseChangeLog.*;
 import java.util.List;
 import java.util.Optional;
@@ -25,14 +22,6 @@ class GenreRepositoryJpaTest {
     private static final String TEST_GENRE_NAME = "test genre name";
     private static final String TEST_GENRE_NEW_NAME = "test genre new name";
     private static final String NAME_FIELD = "name";
-
-/*    private final static long TEST_GENRE_ID_FIRST = 1l;
-    private final static String TEST_GENRE_NAME_FIRST = "Detective";
-
-    private final static long TEST_GENRE_ID_SECOND = 2l;
-
-
-    */
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -59,6 +48,7 @@ class GenreRepositoryJpaTest {
 
     @Test
     @DisplayName("обновляет сущность")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void testThatRepositoryCorrectlyUpdateGenre() {
         Genre genreToUpdate = mongoTemplate.findById(NOVEL_GENRE_ID, Genre.class);
         genreToUpdate.setName(TEST_GENRE_NEW_NAME);
@@ -105,6 +95,7 @@ class GenreRepositoryJpaTest {
 
     @Test
     @DisplayName("удаляет жанр")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void testThatRepositoryCorrectlyDeleteGenre() {
         Genre genreToDelete = mongoTemplate.findById(NOVEL_GENRE_ID, Genre.class);
 

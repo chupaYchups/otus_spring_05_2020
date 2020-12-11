@@ -4,30 +4,22 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Comment;
-import ru.chupaYchups.repository.CommentRepository;
-import java.util.List;
 import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.chupaYchups.mongock.test.TestDatabaseChangeLog.*;
 
 @DataMongoTest
 @DisplayName("Тестирование того, что репозиторий комментариев корректно")
-class CommentRepositoryJpaTest {
-/*
+class CommentRepositoryMongoTest {
+
     private static final String TEST_COMMENT_STRING = "test comment";
-    private static final long TEST_COMMENT_ID = 1L;
     private static final String NEW_TEST_COMMENT_STRING = "new test comment";
-    private static final long TEST_COMMENT_FIRST_ID = 1L;
-    private static final long TEST_COMMENT_SECOND_ID = 2L;
-    private static final long TEST_BOOK_ID = 1L;
 
     @Autowired
-    private TestEntityManager testEntityManager;
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     private CommentRepository commentRepository;
@@ -35,48 +27,59 @@ class CommentRepositoryJpaTest {
     @Test
     @DisplayName("сохраняет новую сущность")
     void testThatRepositoryCorrectlySaveNewComment() {
-        Book testBook = testEntityManager.find(Book.class, TEST_BOOK_ID);
+        Book testBook = mongoTemplate.findById(WAR_AND_PEACE_BOOK_ID, Book.class);
+
         Comment savedComment = commentRepository.save(new Comment(TEST_COMMENT_STRING, testBook));
+
         assertThat(savedComment).isNotNull();
         assertThat(savedComment.getId()).isNotNull();
-        Comment persistedComment = testEntityManager.find(Comment.class, savedComment.getId());
+        Comment persistedComment = mongoTemplate.findById(savedComment.getId(), Comment.class);
         assertThat(persistedComment).isNotNull().isEqualToComparingFieldByField(savedComment);
     }
 
     @Test
     @DisplayName("обновляет сущность")
     void testThatRepositoryCorrectlyUpdateComment() {
-        Comment testComment = testEntityManager.find(Comment.class, TEST_COMMENT_ID);
+        Comment testComment = mongoTemplate.findById(COMMENT_TEST_ID_WP_GOOD, Comment.class);
         testComment.setCommentString(NEW_TEST_COMMENT_STRING);
+
         commentRepository.save(testComment);
-        Comment persistedComment = testEntityManager.find(Comment.class, TEST_COMMENT_ID);
+
+        Comment persistedComment = mongoTemplate.findById(testComment.getId(), Comment.class);
         assertThat(persistedComment).isNotNull().isEqualToComparingFieldByField(testComment);
     }
 
     @Test
     @DisplayName("ищет комментарий по идентификатору")
     void testThatRepositoryCorrectlyFindCommentById() {
-        Optional<Comment> testCommentOptional = commentRepository.findById(TEST_COMMENT_ID);
-        Comment foundComment = testEntityManager.find(Comment.class, TEST_COMMENT_ID);
+        Comment foundComment = mongoTemplate.findById(COMMENT_TEST_ID_WP_GOOD, Comment.class);
+
+        Optional<Comment> testCommentOptional = commentRepository.findById(COMMENT_TEST_ID_WP_GOOD);
+
         assertThat(testCommentOptional).isPresent().get().isEqualToComparingFieldByField(foundComment);
     }
 
     @Test
     @DisplayName("удаляет комментарий")
     void testThatRepositoryCorrectlyDeleteComment() {
-        Comment persistedComment = testEntityManager.find(Comment.class, TEST_COMMENT_ID);
-        commentRepository.delete(persistedComment);
-        persistedComment = testEntityManager.find(Comment.class, TEST_COMMENT_ID);
-        assertThat(persistedComment).isNull();
-    }
+        Comment commentToDelete = mongoTemplate.findById(COMMENT_TEST_ID_WP_GOOD, Comment.class);
 
+        commentRepository.delete(commentToDelete);
+
+        commentToDelete = mongoTemplate.findById(commentToDelete.getId(), Comment.class);
+        assertThat(commentToDelete).isNull();
+    }
+    //todo удалили же ж метод
+/*
     @Test
     @DisplayName("ищет комментарии к книге")
     void testThatRepositoryCorrectlyFindCommentsByBook() {
-        Book testBook = testEntityManager.find(Book.class, TEST_BOOK_ID);
+        Book bookWithComments = mongoTemplate.findById(COMMENT_TEST_ID_WP_GOOD, Book.class);
         Comment testCommentFirst = testEntityManager.find(Comment.class, TEST_COMMENT_FIRST_ID);
         Comment testCommentSecond = testEntityManager.find(Comment.class, TEST_COMMENT_SECOND_ID);
-        List<Comment> bookComments = commentRepository.findByBook(testBook);
+
+        List<Comment> bookComments = commentRepository.findByBook(bookWithComments);
+
         assertThat(bookComments).isNotEmpty().contains(testCommentFirst, testCommentSecond);
     }*/
 }

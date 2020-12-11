@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface BookService {
     List<BookDto> findBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional, Optional<String> nameOptional);
     void addBook(String name, String authorName, String genreName);
-    void updateBookById(long id, Optional<String> namOptional, Optional<String> authorName, Optional<String> genreName);
-    void deleteBookById(long id);
+    void updateBookById(String id, Optional<String> namOptional, Optional<String> authorName, Optional<String> genreName);
+    void deleteBookById(String id);
     List<BookDto> getAllBooks();
 }

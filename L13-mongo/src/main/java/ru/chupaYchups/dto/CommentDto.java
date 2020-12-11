@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommentDto {
 
-    private final Long commentId;
+    private final String commentId;
     private final String commentString;
 
     @Override
