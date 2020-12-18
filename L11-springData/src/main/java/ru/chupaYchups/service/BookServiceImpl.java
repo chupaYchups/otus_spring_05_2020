@@ -3,7 +3,6 @@ package ru.chupaYchups.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.chupaYchups.dto.CommentDto;
 import ru.chupaYchups.repository.AuthorRepository;
 import ru.chupaYchups.repository.BookRepository;
 import ru.chupaYchups.repository.GenreRepository;
@@ -11,8 +10,6 @@ import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.dto.BookDto;
-import ru.chupaYchups.repository.exception.NoSuchBookException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -62,7 +59,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void updateBookById(long id, Optional<String> nameOptional, Optional<String> authorNameOptional, Optional<String> genreNameOptional) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new NoSuchBookException(id));
+        Book book = bookRepository.findBookById(id);
         nameOptional.ifPresent(name -> book.setName(name));
         authorNameOptional.ifPresent(authorName -> book.setAuthor(authorRepository.findByName(authorName).
             orElseGet(() -> authorRepository.save(new Author(authorName)))));
@@ -74,7 +71,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void deleteBookById(long id) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new NoSuchBookException(id));
+        Book book = bookRepository.findBookById(id);
         bookRepository.delete(book);
     }
 

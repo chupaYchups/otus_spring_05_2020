@@ -8,7 +8,7 @@ import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 import java.util.List;
 
-public interface BookRepository extends CrudRepository<Book, Long> {
+public interface BookRepository extends CrudRepository<Book, Long>, BookRepositoryCustom {
     @Query("select b " +
             "from Book b " +
             "join fetch b.author a " +
