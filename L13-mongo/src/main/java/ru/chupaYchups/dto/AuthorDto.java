@@ -5,11 +5,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthorDto {
 
+    private final String id;
     private final String name;
 
     @Override
     public String toString() {
         return "Аuthor - " +
-                "name = '" + name + '\'';
+                "id = " + id +
+                ", name = '" + name + '\'';
     }
 }

@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
 @DisplayName("Тестирование того, что репозиторий жанров корректно")
-class GenreRepositoryJpaTest {
+class GenreRepositoryTest {
 
     private static final String TEST_GENRE_NAME = "test genre name";
     private static final String TEST_GENRE_NEW_NAME = "test genre new name";

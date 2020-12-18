@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface GenreService {
     List<GenreDto> getAllGenres();
+    void delete(String id);
 }

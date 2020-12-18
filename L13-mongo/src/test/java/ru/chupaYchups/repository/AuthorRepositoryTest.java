@@ -16,7 +16,7 @@ import static ru.chupaYchups.mongock.test.TestDatabaseChangeLog.*;
 
 @DataMongoTest
 @DisplayName("Тестирование того, что репозиторий авторов корректно")
-class AuthorRepositoryMongoTest {
+class AuthorRepositoryTest {
 
     public static final String NAME_FIELD = "name";
     public static final String TEST_AUTHOR_NEW_NAME = "test author new name";

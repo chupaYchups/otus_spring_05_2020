@@ -13,7 +13,7 @@ import static ru.chupaYchups.mongock.test.TestDatabaseChangeLog.*;
 
 @DataMongoTest
 @DisplayName("Тестирование того, что репозиторий комментариев корректно")
-class CommentRepositoryMongoTest {
+class CommentRepositoryTest {
 
     private static final String TEST_COMMENT_STRING = "test comment";
     private static final String NEW_TEST_COMMENT_STRING = "new test comment";

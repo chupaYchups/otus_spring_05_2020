@@ -3,7 +3,7 @@ package ru.chupaYchups.mongock.test;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.mongodb.client.MongoDatabase;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.MongoOperations;
 import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Comment;
@@ -44,7 +44,7 @@ public class TestDatabaseChangeLog {
     }
 
     @ChangeSet(order = "002", id="insertAuthors", author= CHUPA_Y_CHUPS)
-    public void insertAuthors(MongoTemplate mongoTemplate) {
+    public void insertAuthors(MongoOperations mongoTemplate) {
         Author authorPushkin = new Author(PUSHKIN_AUTHOR_NAME);
         authorPushkin.setId(PUSHKIN_AUTHOR_ID);
         mongoTemplate.save(authorPushkin);
@@ -55,7 +55,7 @@ public class TestDatabaseChangeLog {
     }
 
     @ChangeSet(order = "003", id="insertGenres", author=CHUPA_Y_CHUPS)
-    public void insertGenres(MongoTemplate mongoTemplate) {
+    public void insertGenres(MongoOperations mongoTemplate) {
         Genre novelGenre = new Genre(NOVEL_GENRE_NAME);
         novelGenre.setId(NOVEL_GENRE_ID);
         mongoTemplate.save(novelGenre);
@@ -67,7 +67,7 @@ public class TestDatabaseChangeLog {
 
 
     @ChangeSet(order = "004", id="insertBooks", author=CHUPA_Y_CHUPS)
-    public void insertBooks(MongoTemplate mongoTemplate) {
+    public void insertBooks(MongoOperations mongoTemplate) {
         Book warAndPeaceBook = new Book(WAR_AND_PEACE_BOOK_NAME,
             mongoTemplate.findById(TOLSTOY_AUTHOR_ID, Author.class),
             mongoTemplate.findById(NOVEL_GENRE_ID, Genre.class));
@@ -81,8 +81,8 @@ public class TestDatabaseChangeLog {
         mongoTemplate.save(ruslanAndLudmilaBook);
     }
 
-    @ChangeSet(order = "004", id="insertComments", author=CHUPA_Y_CHUPS)
-    public void insertComments(MongoTemplate mongoTemplate) {
+    @ChangeSet(order = "005", id="insertComments", author=CHUPA_Y_CHUPS)
+    public void insertComments(MongoOperations mongoTemplate) {
         Book warAndPeaceBook = mongoTemplate.findById(WAR_AND_PEACE_BOOK_ID, Book.class);
 
         Comment warAndPeaceGoodComment = new Comment(GOOD_TEST_COMMENT, warAndPeaceBook);

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
@@ -18,7 +19,7 @@ import static ru.chupaYchups.mongock.test.TestDatabaseChangeLog.*;
 
 @DataMongoTest
 @DisplayName("Тестирование того, что репозиторий книг корректно")
-class BookRepositoryJpaTest {
+class BookRepositoryTest {
 
     private static final String TEST_GENRE_NAME = "test genre name";
     private static final String TEST_BOOK_NAME = "test book name";
@@ -41,6 +42,7 @@ class BookRepositoryJpaTest {
 
     @Test
     @DisplayName("удаляет книгу")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void testThatCorrectlyDeleteBook() {
         Book bookToDelete = mongoTemplate.findById(WAR_AND_PEACE_BOOK_ID, Book.class);
 
@@ -67,6 +69,7 @@ class BookRepositoryJpaTest {
 
     @Test
     @DisplayName("обновляет книгу")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void testThatCorrectlyUpdateBook() {
         Book testBook = mongoTemplate.findById(WAR_AND_PEACE_BOOK_ID, Book.class);
         Genre newGenre = new Genre(TEST_GENRE_NAME);
@@ -77,18 +80,6 @@ class BookRepositoryJpaTest {
         assertThat(returnedBook).isEqualToComparingFieldByField(testBook);
         Book persistedBook = mongoTemplate.findById(returnedBook.getId(), Book.class);
         assertThat(persistedBook).isEqualToComparingFieldByField(testBook);
-    }
-
-    @Test
-    @DisplayName("ищет книги по параметрам")
-    void testThatCorrectlyFindBookByParameters() {
-        Book testBook = mongoTemplate.findById(WAR_AND_PEACE_BOOK_ID, Book.class);
-        Genre testBookGenre = mongoTemplate.findById(NOVEL_GENRE_ID, Genre.class);
-        Author testBookAuthor = mongoTemplate.findById(TOLSTOY_AUTHOR_ID, Author.class);
-
-        List<Book> foundBooks = bookRepository.findAllByAuthorOrGenreOrName(null, testBookAuthor, testBookGenre);
-
-        assertThat(foundBooks).isNotEmpty().hasSize(1).contains(testBook);
     }
 
     @Test

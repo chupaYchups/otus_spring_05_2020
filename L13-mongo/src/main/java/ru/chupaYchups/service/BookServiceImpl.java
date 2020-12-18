@@ -1,6 +1,9 @@
 package ru.chupaYchups.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.chupaYchups.repository.AuthorRepository;
@@ -25,6 +28,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
+    private final MongoTemplate mongoTemplate;
 
     public static class BookDtoMapper implements Function<Book, BookDto> {
         @Override
@@ -46,8 +50,13 @@ public class BookServiceImpl implements BookService {
     public List<BookDto> findBooks(Optional<String> authorNameOptional, Optional<String> genreNameOptional, Optional<String> nameOptional) {
         Optional<Author> authorOptional = authorNameOptional.flatMap(authorName -> authorRepository.findByName(authorName));
         Optional<Genre> genreOptional = genreNameOptional.flatMap(genreName -> genreRepository.findByName(genreName));
-        return bookRepository.findAllByAuthorOrGenreOrName(nameOptional.get(),authorOptional.get(), genreOptional.get()).
-            stream().
+
+        Query query = new Query();
+        nameOptional.ifPresent(name -> query.addCriteria(Criteria.where("name").is(name)));
+        authorOptional.ifPresent(author -> query.addCriteria(Criteria.where("author").is(author)));
+        genreOptional.ifPresent(genre -> query.addCriteria(Criteria.where("genre").is(genre)));
+
+        return mongoTemplate.find(query, Book.class).stream().
             map(new BookDtoMapper()).
             collect(Collectors.toList());
     }
@@ -86,4 +95,5 @@ public class BookServiceImpl implements BookService {
                 map(new BookDtoMapper()).
                 collect(Collectors.toList());
     }
+
 }

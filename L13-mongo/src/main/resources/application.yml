@@ -8,7 +8,7 @@ spring:
 
 logging:
   level:
-    ROOT: INFO
+    ROOT: ERROR
 
 mongock:
 #      runner-type: "ApplicationRunner" # default

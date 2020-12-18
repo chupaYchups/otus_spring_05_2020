@@ -3,6 +3,7 @@ package ru.chupaYchups.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
@@ -21,5 +22,6 @@ public class Comment {
 
     private String commentString;
 
+    @DBRef
     private Book book;
 }

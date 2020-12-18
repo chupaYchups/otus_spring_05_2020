@@ -3,6 +3,7 @@ package ru.chupaYchups.shell;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
 import ru.chupaYchups.dto.AuthorDto;
 import ru.chupaYchups.service.AuthorService;
 
@@ -20,5 +21,11 @@ public class AuthorCommands {
             stream().
             map(AuthorDto::toString).
             collect(Collectors.joining("\n"));
+    }
+
+    @ShellMethod(value = "Delete author.", key = "del-author")
+    public String deleteAuthor(@ShellOption("--id")String id) {
+        authorService.delete(id);
+        return "Author with id " + id + "deleted successfully";
     }
 }

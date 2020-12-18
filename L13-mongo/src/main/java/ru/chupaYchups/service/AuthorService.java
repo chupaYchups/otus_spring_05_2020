@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface AuthorService {
     List<AuthorDto> getAllAuthors();
+    void delete(String id);
 }
