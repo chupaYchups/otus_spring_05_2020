@@ -20,12 +20,10 @@ class AuthorRepositoryJpaTest {
 
     private final static long TEST_AUTHOR_ID_FIRST = 1l;
     private final static String TEST_AUTHOR_NAME_FIRST = "Tolstoy";
-
     private final static long TEST_AUTHOR_ID_SECOND = 2l;
-
-    public static final String TEST_AUTHOR_NAME = "test author name";
-    public static final String NAME_FIELD = "name";
-    public static final String TEST_AUTHOR_NEW_NAME = "test author new name";
+    private static final String TEST_AUTHOR_NAME = "test author name";
+    private static final String NAME_FIELD = "name";
+    private static final String TEST_AUTHOR_NEW_NAME = "test author new name";
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -82,7 +80,7 @@ class AuthorRepositoryJpaTest {
 
         Optional<Author> foundAuthorOptional = authorRepository.findByName(TEST_AUTHOR_NAME_FIRST);
 
-        assertThat(foundAuthorOptional).isNotEmpty().containsSame(persistedAuthor);
+        assertThat(foundAuthorOptional).isNotEmpty().contains(persistedAuthor);
     }
 
     @Test
