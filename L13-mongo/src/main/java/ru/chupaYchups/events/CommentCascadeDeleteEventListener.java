@@ -5,20 +5,20 @@ import org.bson.Document;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.AfterDeleteEvent;
 import org.springframework.stereotype.Component;
-import ru.chupaYchups.domain.Author;
+import ru.chupaYchups.domain.Comment;
 import ru.chupaYchups.repository.BookRepository;
 
 @Component
 @RequiredArgsConstructor
-public class AuthorCascadeDeleteEventListener extends AbstractMongoEventListener<Author> {
+public class CommentCascadeDeleteEventListener extends AbstractMongoEventListener<Comment> {
 
     private final BookRepository bookRepository;
 
     @Override
-    public void onAfterDelete(AfterDeleteEvent<Author> event) {
+    public void onAfterDelete(AfterDeleteEvent<Comment> event) {
         super.onAfterDelete(event);
         Document document = event.getSource();
-        String authorId = document.get("_id").toString();
-        bookRepository.removeAuthorBooks(authorId);
+        String commentId = document.get("_id").toString();
+        bookRepository.clearCommentInfoFromBooks(commentId);
     }
 }
