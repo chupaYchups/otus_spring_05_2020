@@ -20,25 +20,23 @@ class AuthorRepositoryJpaTest {
 
     private final static long TEST_AUTHOR_ID_FIRST = 1l;
     private final static String TEST_AUTHOR_NAME_FIRST = "Tolstoy";
-
     private final static long TEST_AUTHOR_ID_SECOND = 2l;
-
-    public static final String TEST_AUTHOR_NAME = "test author name";
-    public static final String NAME_FIELD = "name";
-    public static final String TEST_AUTHOR_NEW_NAME = "test author new name";
+    private static final String TEST_AUTHOR_NAME = "test author name";
+    private static final String NAME_FIELD = "name";
+    private static final String TEST_AUTHOR_NEW_NAME = "test author new name";
 
     @Autowired
     private TestEntityManager testEntityManager;
 
     @Autowired
-    private AuthorRepositoryJpa authorRepositoryJpa;
+    private AuthorRepository authorRepository;
 
     @Test
     @DisplayName("сохраняет новую сущность")
     void testThatRepositoryCorrectlySaveNewAuthor() {
         Author authorToSave = new Author(TEST_AUTHOR_NAME);
 
-        Author returnedAuthor = authorRepositoryJpa.save(authorToSave);
+        Author returnedAuthor = authorRepository.save(authorToSave);
 
         assertThat(returnedAuthor).
             isNotNull().
@@ -56,7 +54,7 @@ class AuthorRepositoryJpaTest {
         Author authorToUpdate = testEntityManager.find(Author.class, TEST_AUTHOR_ID_FIRST);
         authorToUpdate.setName(TEST_AUTHOR_NEW_NAME);
 
-        Author returnedAuthor = authorRepositoryJpa.save(authorToUpdate);
+        Author returnedAuthor = authorRepository.save(authorToUpdate);
 
         assertThat(returnedAuthor).isEqualTo(authorToUpdate);
 
@@ -70,7 +68,7 @@ class AuthorRepositoryJpaTest {
     void testThatRepositoryCorrectlyFindAuthorById() {
         Author persistedAuthor = testEntityManager.find(Author.class, TEST_AUTHOR_ID_FIRST);
 
-        Optional<Author> foundAuthorOptional = authorRepositoryJpa.findById(TEST_AUTHOR_ID_FIRST);
+        Optional<Author> foundAuthorOptional = authorRepository.findById(TEST_AUTHOR_ID_FIRST);
 
         assertThat(foundAuthorOptional).isNotEmpty().contains(persistedAuthor);
     }
@@ -80,9 +78,9 @@ class AuthorRepositoryJpaTest {
     void testThatRepositoryCorrectlyFindAuthorByName() {
         Author persistedAuthor = testEntityManager.find(Author.class, TEST_AUTHOR_ID_FIRST);
 
-        Optional<Author> foundAuthorOptional = authorRepositoryJpa.findByName(TEST_AUTHOR_NAME_FIRST);
+        Optional<Author> foundAuthorOptional = authorRepository.findByName(TEST_AUTHOR_NAME_FIRST);
 
-        assertThat(foundAuthorOptional).isNotEmpty().containsSame(persistedAuthor);
+        assertThat(foundAuthorOptional).isNotEmpty().contains(persistedAuthor);
     }
 
     @Test
@@ -91,7 +89,7 @@ class AuthorRepositoryJpaTest {
         Author tolstoyAuthor = testEntityManager.find(Author.class, TEST_AUTHOR_ID_FIRST);
         Author pushkinAuthor = testEntityManager.find(Author.class, TEST_AUTHOR_ID_SECOND);
 
-        List<Author> authorList = authorRepositoryJpa.getAll();
+        List<Author> authorList = authorRepository.getAll();
 
         assertThat(authorList).hasSize(2).contains(tolstoyAuthor, pushkinAuthor);
     }
@@ -101,7 +99,7 @@ class AuthorRepositoryJpaTest {
     void testThatRepositoryCorrectlyDeleteAuthor() {
         Author authorToDelete = testEntityManager.find(Author.class, TEST_AUTHOR_ID_FIRST);
 
-        authorRepositoryJpa.delete(authorToDelete);
+        authorRepository.delete(authorToDelete);
 
         assertThat(testEntityManager.find(Author.class, TEST_AUTHOR_ID_FIRST)).isNull();
     }

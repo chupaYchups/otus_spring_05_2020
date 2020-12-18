@@ -6,14 +6,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Data
 public class CommentDto {
-
-    private final Long commentId;
+    private final long commentId;
     private final String commentString;
-
-    @Override
-    public String toString() {
-        return "Comment - " +
-                "id = '" + commentId + '\'' +
-                ", text = '" + commentString + '\'';
-    }
 }

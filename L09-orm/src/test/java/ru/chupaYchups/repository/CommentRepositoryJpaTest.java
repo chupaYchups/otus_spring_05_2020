@@ -30,13 +30,13 @@ class CommentRepositoryJpaTest {
     private TestEntityManager testEntityManager;
 
     @Autowired
-    private CommentRepositoryJpa commentRepositoryJpa;
+    private CommentRepository commentRepository;
 
     @Test
     @DisplayName("сохраняет новую сущность")
     void testThatRepositoryCorrectlySaveNewComment() {
         Book testBook = testEntityManager.find(Book.class, TEST_BOOK_ID);
-        Comment savedComment = commentRepositoryJpa.save(new Comment(TEST_COMMENT_STRING, testBook));
+        Comment savedComment = commentRepository.save(new Comment(TEST_COMMENT_STRING, testBook));
         assertThat(savedComment).isNotNull();
         assertThat(savedComment.getId()).isNotNull();
         Comment persistedComment = testEntityManager.find(Comment.class, savedComment.getId());
@@ -48,7 +48,7 @@ class CommentRepositoryJpaTest {
     void testThatRepositoryCorrectlyUpdateComment() {
         Comment testComment = testEntityManager.find(Comment.class, TEST_COMMENT_ID);
         testComment.setCommentString(NEW_TEST_COMMENT_STRING);
-        commentRepositoryJpa.save(testComment);
+        commentRepository.save(testComment);
         Comment persistedComment = testEntityManager.find(Comment.class, TEST_COMMENT_ID);
         assertThat(persistedComment).isNotNull().isEqualToComparingFieldByField(testComment);
     }
@@ -56,16 +56,16 @@ class CommentRepositoryJpaTest {
     @Test
     @DisplayName("ищет комментарий по идентификатору")
     void testThatRepositoryCorrectlyFindCommentById() {
-        Optional<Comment> testCommentOptional = commentRepositoryJpa.findById(TEST_COMMENT_ID);
+        Comment testComment = commentRepository.findById(TEST_COMMENT_ID);
         Comment foundComment = testEntityManager.find(Comment.class, TEST_COMMENT_ID);
-        assertThat(testCommentOptional).isPresent().get().isEqualToComparingFieldByField(foundComment);
+        assertThat(testComment).isEqualToComparingFieldByField(foundComment);
     }
 
     @Test
     @DisplayName("удаляет комментарий")
     void testThatRepositoryCorrectlyDeleteComment() {
         Comment persistedComment = testEntityManager.find(Comment.class, TEST_COMMENT_ID);
-        commentRepositoryJpa.delete(persistedComment);
+        commentRepository.delete(persistedComment);
         persistedComment = testEntityManager.find(Comment.class, TEST_COMMENT_ID);
         assertThat(persistedComment).isNull();
     }
@@ -76,7 +76,6 @@ class CommentRepositoryJpaTest {
         Book testBook = testEntityManager.find(Book.class, TEST_BOOK_ID);
         Comment testCommentFirst = testEntityManager.find(Comment.class, TEST_COMMENT_FIRST_ID);
         Comment testCommentSecond = testEntityManager.find(Comment.class, TEST_COMMENT_SECOND_ID);
-        List<Comment> bookComments = commentRepositoryJpa.findByBook(testBook);
-        assertThat(bookComments).isNotEmpty().contains(testCommentFirst, testCommentSecond);
+        assertThat(testBook.getComments()).isNotEmpty().contains(testCommentFirst, testCommentSecond);
     }
 }

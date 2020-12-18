@@ -13,10 +13,10 @@ import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.dto.CommentDto;
 import ru.chupaYchups.repository.BookRepository;
 import ru.chupaYchups.repository.CommentRepository;
+import ru.chupaYchups.repository.exception.NoSuchBookException;
+import ru.chupaYchups.repository.exception.NoSuchCommentException;
 import java.util.List;
-import java.util.Optional;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -35,6 +35,11 @@ class CommentServiceImplTest {
     private static final String TEST_AUTHOR_NAME = "test author";
     private static final String TEST_GENRE_NAME = "test genre";
 
+    public static final String CANNOT_FIND_COMMENT_WITH_ID_MSG = "Cannot find comment with id: ";
+    public static final String CANNOT_FIND_BOOK_WITH_ID_MSG = "Cannot find book with id: ";
+    public static final long TEST_COMMENT_FIRST_ID = 1l;
+    public static final long TEST_COMMENT_SECOND_ID = 2l;
+
     @MockBean
     private BookRepository bookRepository;
 
@@ -48,16 +53,16 @@ class CommentServiceImplTest {
     @DisplayName("начитывает список комментариев по идентификатору книги")
     void testThatServiceCorrectlyFindBookComments() {
         final Book testBook = new Book(TEST_BOOK_NAME, new Author(TEST_AUTHOR_NAME), new Genre(TEST_GENRE_NAME));
-        List<Comment> testCommentList = List.of(new Comment(TEST_COMMENT_FIRST_STRING, testBook),
-            new Comment(TEST_COMMENT_SECOND_STRING, testBook));
-        testBook.setComments(testCommentList);
-        given(bookRepository.findById(TEST_BOOK_ID)).willReturn(Optional.of(testBook));
-        given(commentRepository.findByBook(testBook)).willReturn(testCommentList);
+        Comment testCommentFirst = new Comment(TEST_COMMENT_FIRST_STRING, testBook);
+        testCommentFirst.setId(TEST_COMMENT_FIRST_ID);
+        Comment testCommentSecond = new Comment(TEST_COMMENT_SECOND_STRING, testBook);
+        testCommentSecond.setId(TEST_COMMENT_SECOND_ID);
+        testBook.setComments(List.of(testCommentFirst, testCommentSecond));
+        given(bookRepository.findById(TEST_BOOK_ID)).willReturn(testBook);
 
         List<CommentDto> commentDtoList = commentService.getBookComments(TEST_BOOK_ID);
 
         assertThat(commentDtoList).hasSize(2);
-
         assertThat(commentDtoList).
                 extracting(COMMENT_STRING).
                 containsExactly(TEST_COMMENT_FIRST_STRING, TEST_COMMENT_SECOND_STRING);
@@ -70,11 +75,11 @@ class CommentServiceImplTest {
         List<Comment> testCommentList = List.of(new Comment(TEST_COMMENT_FIRST_STRING, testBook),
                 new Comment(TEST_COMMENT_SECOND_STRING, testBook));
         testBook.setComments(testCommentList);
-        given(bookRepository.findById(TEST_BOOK_ID)).willReturn(Optional.empty());
+        given(bookRepository.findById(TEST_BOOK_ID)).willThrow(new NoSuchBookException(TEST_BOOK_ID));
 
-        assertThatIllegalArgumentException().isThrownBy(() -> {
+        assertThatExceptionOfType(NoSuchBookException.class).isThrownBy(() -> {
             commentService.getBookComments(TEST_BOOK_ID);
-        }).withMessage("Cannot find book with id " + TEST_BOOK_ID);
+        }).withMessage(CANNOT_FIND_BOOK_WITH_ID_MSG + TEST_BOOK_ID);
     }
 
     @Test
@@ -82,7 +87,7 @@ class CommentServiceImplTest {
     void testThatServiceCorrectlyAddComment() {
         final Book testBook = new Book(TEST_BOOK_NAME, new Author(TEST_AUTHOR_NAME), new Genre(TEST_GENRE_NAME));
         final Comment commentToAdd = new Comment(TEST_COMMENT_FIRST_STRING, testBook);
-        given(bookRepository.findById(TEST_BOOK_ID)).willReturn(Optional.of(testBook));
+        given(bookRepository.findById(TEST_BOOK_ID)).willReturn(testBook);
 
         commentService.addComment(TEST_BOOK_ID, TEST_COMMENT_FIRST_STRING);
 
@@ -92,11 +97,11 @@ class CommentServiceImplTest {
     @Test
     @DisplayName("выбрасывает исключение при попытке добавить комментарий к несуществующей книге")
     void testThatServiceThrowsExceptionWhenAddCommentToNotExistsBook() {
-        given(bookRepository.findById(TEST_BOOK_ID)).willReturn(Optional.empty());
+        given(bookRepository.findById(TEST_BOOK_ID)).willThrow(new NoSuchBookException(TEST_BOOK_ID));
 
-        assertThatIllegalArgumentException().isThrownBy(() -> {
+        assertThatExceptionOfType(NoSuchBookException.class).isThrownBy(() -> {
             commentService.addComment(TEST_BOOK_ID, TEST_COMMENT_FIRST_STRING);
-        }).withMessage("Cannot find book with id " + TEST_BOOK_ID);
+        }).withMessage(CANNOT_FIND_BOOK_WITH_ID_MSG + TEST_BOOK_ID);
     }
 
     @Test
@@ -104,8 +109,8 @@ class CommentServiceImplTest {
     void testThatServiceCorrectlyDeleteComment() {
         final Book testBook = new Book(TEST_BOOK_NAME, new Author(TEST_AUTHOR_NAME), new Genre(TEST_GENRE_NAME));
         final Comment commentToDelete = new Comment(TEST_COMMENT_FIRST_STRING, testBook);
-        given(bookRepository.findById(TEST_BOOK_ID)).willReturn(Optional.of(testBook));
-        given(commentRepository.findById(TEST_COMMENT_ID)).willReturn(Optional.of(commentToDelete));
+        given(bookRepository.findById(TEST_BOOK_ID)).willReturn(testBook);
+        given(commentRepository.findById(TEST_COMMENT_ID)).willReturn(commentToDelete);
 
         commentService.deleteComment(TEST_COMMENT_ID);
 
@@ -116,12 +121,12 @@ class CommentServiceImplTest {
     @DisplayName("выбрасывает исключение при попытке удаление не существующего комментария")
     void testThatServiceThrowsExceptionWhenTryToDeleteNotExistsComment() {
         final Book testBook = new Book(TEST_BOOK_NAME, new Author(TEST_AUTHOR_NAME), new Genre(TEST_GENRE_NAME));
-        given(bookRepository.findById(TEST_BOOK_ID)).willReturn(Optional.of(testBook));
-        given(commentRepository.findById(TEST_COMMENT_ID)).willReturn(Optional.empty());
+        given(bookRepository.findById(TEST_BOOK_ID)).willReturn(testBook);
+        given(commentRepository.findById(TEST_COMMENT_ID)).willThrow(new NoSuchCommentException(TEST_COMMENT_ID));
 
-        assertThatIllegalArgumentException().isThrownBy(() -> {
+        assertThatExceptionOfType(NoSuchCommentException.class).isThrownBy(() -> {
             commentService.deleteComment(TEST_COMMENT_ID);
-        }).withMessage("Cannot find comment with id " + TEST_COMMENT_ID);
+        }).withMessage(CANNOT_FIND_COMMENT_WITH_ID_MSG + TEST_COMMENT_ID);
     }
 
     @Test
@@ -129,7 +134,7 @@ class CommentServiceImplTest {
     void testThatServiceCorrectlyUpdateComment() {
         final Book testBook = new Book(TEST_BOOK_NAME, new Author(TEST_AUTHOR_NAME), new Genre(TEST_GENRE_NAME));
         final Comment commentToUpdate = new Comment(TEST_COMMENT_FIRST_STRING, testBook);
-        given(commentRepository.findById(TEST_COMMENT_ID)).willReturn(Optional.of(commentToUpdate));
+        given(commentRepository.findById(TEST_COMMENT_ID)).willReturn(commentToUpdate);
 
         commentService.updateComment(TEST_COMMENT_ID, TEST_COMMENT_SECOND_STRING);
 
