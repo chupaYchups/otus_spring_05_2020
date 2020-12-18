@@ -1,6 +1,6 @@
 package ru.chupaYchups.repository.exception;
 
-public class NoSuchCommentException extends RuntimeException {
+public class NoSuchCommentException extends LibraryException {
 
     private static final String CANNOT_FIND_COMMENT_WITH_ID = "Cannot find comment with id: ";
 
