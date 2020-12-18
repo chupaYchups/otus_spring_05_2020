@@ -3,6 +3,7 @@ package ru.chupaYchups.dto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +25,10 @@ public class BookDto {
                 ", author = '" + author + '\'' +
                 ", genre = '" + genre + '\'' +
                 ", comments : \n" +
-                commentDtoList.stream().
-                    map(CommentDto::toString).
-                    collect(Collectors.joining("\n"));
+                (commentDtoList != null ?
+                        commentDtoList.stream().
+                                map(CommentDto::toString).
+                                collect(Collectors.joining("\n"))
+                        : Collections.emptyList().toString());
     }
 }

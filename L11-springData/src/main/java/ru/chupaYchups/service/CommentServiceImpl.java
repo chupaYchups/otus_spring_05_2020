@@ -8,7 +8,11 @@ import ru.chupaYchups.domain.Comment;
 import ru.chupaYchups.dto.CommentDto;
 import ru.chupaYchups.repository.BookRepository;
 import ru.chupaYchups.repository.CommentRepository;
+import ru.chupaYchups.repository.exception.NoSuchBookException;
+import ru.chupaYchups.repository.exception.NoSuchCommentException;
+
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -18,14 +22,21 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final BookRepository bookRepository;
 
+    static class CommentDtoMapper implements Function<Comment, CommentDto> {
+        @Override
+        public CommentDto apply(Comment comment) {
+            return new CommentDto(comment.getId(), comment.getCommentString());
+        }
+    }
+
     @Override
     @Transactional(readOnly = true)
     public List<CommentDto> getBookComments(long bookId) {
         Book book = bookRepository.findById(bookId).
-            orElseThrow(() -> new IllegalArgumentException("Cannot find book with id " + bookId));
+            orElseThrow(() -> new NoSuchBookException(bookId));
         return book.getComments().
             stream().
-            map(comment -> new CommentDto(comment.getId(), comment.getCommentString())).
+            map(new CommentDtoMapper()).
             collect(Collectors.toList());
     }
 
@@ -33,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void deleteComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId).
-            orElseThrow(() -> new IllegalArgumentException("Cannot find comment with id " + commentId));
+            orElseThrow(() -> new NoSuchCommentException(commentId));
         commentRepository.delete(comment);
     }
 
@@ -41,7 +52,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void addComment(Long bookId, String commentText) {
         Book book = bookRepository.findById(bookId).
-                orElseThrow(() -> new IllegalArgumentException("Cannot find book with id " + bookId));
+                orElseThrow(() ->  new NoSuchBookException(bookId));
         commentRepository.save(new Comment(commentText, book));
     }
 
@@ -49,7 +60,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void updateComment(Long commentId, String text) {
         Comment comment = commentRepository.findById(commentId).
-                orElseThrow(() -> new IllegalArgumentException("Cannot find comment with id " + commentId));
+                orElseThrow(() -> new NoSuchCommentException(commentId));
         comment.setCommentString(text);
         commentRepository.save(comment);
     }

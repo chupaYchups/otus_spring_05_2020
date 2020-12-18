@@ -29,11 +29,11 @@ public class Book {
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AUTHOR_ID", nullable = false)
     private Author author;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "GENRE_ID", nullable = false)
     private Genre genre;
 
