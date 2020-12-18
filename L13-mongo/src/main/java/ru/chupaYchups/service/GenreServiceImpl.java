@@ -22,7 +22,7 @@ public class GenreServiceImpl implements GenreService {
     @Transactional(readOnly = true)
     public List<GenreDto> getAllGenres() {
         return StreamSupport.stream(genreRepository.findAll().spliterator(), false).
-            map(genre -> new GenreDto(genre.getName())).
+            map(genre -> new GenreDto(genre.getId(), genre.getName())).
             collect(Collectors.toList());
     }
 
