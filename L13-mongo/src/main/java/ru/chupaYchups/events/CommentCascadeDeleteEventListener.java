@@ -19,6 +19,6 @@ public class CommentCascadeDeleteEventListener extends AbstractMongoEventListene
         super.onAfterDelete(event);
         Document document = event.getSource();
         String commentId = document.get("_id").toString();
-        bookRepository.clearCommentInfoFromBooks(commentId);
+        bookRepository.removeCommentRefWhereExist(commentId);
     }
 }

@@ -19,6 +19,6 @@ public class GenreCascadeDeleteEventListener extends AbstractMongoEventListener<
         super.onAfterDelete(event);
         Document document = event.getSource();
         String genreId = document.get("_id").toString();
-        bookRepository.removeGenreBooks(genreId);
+        bookRepository.removeByGenreId(genreId);
     }
 }

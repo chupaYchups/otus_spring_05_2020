@@ -19,6 +19,6 @@ public class AuthorCascadeDeleteEventListener extends AbstractMongoEventListener
         super.onAfterDelete(event);
         Document document = event.getSource();
         String authorId = document.get("_id").toString();
-        bookRepository.removeAuthorBooks(authorId);
+        bookRepository.removeByAuthorId(authorId);
     }
 }

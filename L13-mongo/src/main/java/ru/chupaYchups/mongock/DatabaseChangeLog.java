@@ -77,14 +77,8 @@ public class DatabaseChangeLog {
 
     private void addCommentsToBook(BookRepository bookRepository, CommentRepository commentRepository, String bookName) {
         Book book = bookRepository.findByName(bookName);
-
         Comment goodComment = new Comment(GOOD_TEST_COMMENT, book);
-        commentRepository.save(goodComment);
-
         Comment badComment = new Comment(BAD_TEST_COMMENT, book);
-        commentRepository.save(badComment);
-
-        book.setComments(List.of(goodComment, badComment));
-        bookRepository.save(book);
+        commentRepository.saveAll(List.of(badComment, goodComment));
     }
 }

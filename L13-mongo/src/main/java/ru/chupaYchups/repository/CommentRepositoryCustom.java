@@ -1,5 +1,5 @@
 package ru.chupaYchups.repository;
 
 public interface CommentRepositoryCustom {
-    void removeBookComments(String bookId);
+    void removeByBookId(String bookId);
 }
