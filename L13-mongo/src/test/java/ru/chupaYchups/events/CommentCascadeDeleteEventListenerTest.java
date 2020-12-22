@@ -17,7 +17,7 @@ import static ru.chupaYchups.mongock.test.TestDatabaseChangeLog.WAR_AND_PEACE_BO
 @DataMongoTest
 @ComponentScan("ru.chupaYchups.events")
 @DisplayName("Тестирование того что листенер удаления комментария")
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class CommentCascadeDeleteEventListenerTest {
 
     @Autowired
