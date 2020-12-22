@@ -22,6 +22,7 @@
         <module>L05-springShell</module>
         <module>L07-jdbc</module>
         <module>L09-orm</module>
+        <module>L11-springData</module>
     </modules>
 
     <dependencies>
