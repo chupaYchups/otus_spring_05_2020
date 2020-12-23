@@ -1,4 +1,4 @@
-package ru.chupaYchups.repository.exception;
+package ru.chupaYchups.exception;
 
 public class NoSuchBookException extends LibraryException {
 

@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Comment;
 import ru.chupaYchups.dto.CommentDto;
+import ru.chupaYchups.exception.NoSuchBookException;
+import ru.chupaYchups.exception.NoSuchCommentException;
 import ru.chupaYchups.repository.BookRepository;
 import ru.chupaYchups.repository.CommentRepository;
 import java.util.List;
@@ -29,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional(readOnly = true)
     public List<CommentDto> getBookComments(long bookId) {
-        Book book = bookRepository.findBookById(bookId);
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new NoSuchBookException(bookId));
         return book.getComments().
             stream().
             map(new CommentDtoMapper()).
@@ -39,21 +41,21 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void deleteComment(Long commentId) {
-        Comment comment = commentRepository.findCommentById(commentId);
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NoSuchCommentException(commentId));
         commentRepository.delete(comment);
     }
 
     @Override
     @Transactional
     public void addComment(Long bookId, String commentText) {
-        Book book = bookRepository.findBookById(bookId);
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new NoSuchBookException(bookId));
         commentRepository.save(new Comment(commentText, book));
     }
 
     @Override
     @Transactional
     public void updateComment(Long commentId, String text) {
-        Comment comment = commentRepository.findCommentById(commentId);
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NoSuchCommentException(commentId));
         comment.setCommentString(text);
         commentRepository.save(comment);
     }
