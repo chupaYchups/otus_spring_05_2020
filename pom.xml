@@ -23,6 +23,7 @@
         <module>L07-jdbc</module>
         <module>L09-orm</module>
         <module>L11-springData</module>
+        <module>L16-mvc</module>
     </modules>
 
     <dependencies>
