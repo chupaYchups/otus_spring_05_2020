@@ -5,6 +5,6 @@ import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Comment;
 import java.util.List;
 
-public interface CommentRepository extends CrudRepository<Comment, Long>, CommentRepositoryCustom {
+public interface CommentRepository extends CrudRepository<Comment, Long> {
     List<Comment> findByBook(Book book);
 }
