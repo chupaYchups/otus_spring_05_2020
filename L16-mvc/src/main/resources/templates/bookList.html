@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <div>
-        <a th:href="@{/edit}" th:method="get" href="bookEdit.html">Add book</a>
-    </div>
-    <table>
-        <thead>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>List of all persons</title>
+        <style type="text/css">
+            body {
+                padding: 50px;
+            }
+            .book-table {
+                margin-top: 10px;
+            }
+            .book-table, .book-table td {
+                border: 1px solid lightgray;
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <a th:href="@{/edit}" th:method="get" href="bookEdit.html">->Add book<-</a>
+        </div>
+        <table class="book-table">
+            <thead>
             <th>Name</th>
             <th>Аuthor</th>
             <th>Genre</th>
             <th>Edit</th>
             <th>Delete</th>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr th:each="book : ${books}">
                 <td th:text="${book.name}">My book</td>
                 <td th:text="${book.author}">Gogol</td>
@@ -19,6 +36,7 @@
                 <td><a th:href="@{/edit(id=${book.id})}" href="bookEdit.html">Edit</a></td>
                 <td><a th:href="@{/delete(id=${book.id})}" href="bookEdit.html">Delete</a></td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </body>
 </html>
