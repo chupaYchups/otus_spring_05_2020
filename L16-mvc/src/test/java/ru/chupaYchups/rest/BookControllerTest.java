@@ -13,14 +13,10 @@ import ru.chupaYchups.dto.BookDto;
 import ru.chupaYchups.service.BookService;
 import java.util.List;
 import java.util.Optional;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.only;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
 
 @WebMvcTest(BookController.class)
 @DisplayName("Тестирование того что контроллер книг корректно обрабатывает")
