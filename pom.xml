@@ -24,6 +24,7 @@
         <module>L09-orm</module>
         <module>L11-springData</module>
         <module>L16-mvc</module>
+        <module>L17-ajax</module>
     </modules>
 
     <dependencies>

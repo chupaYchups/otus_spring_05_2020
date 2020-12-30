@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>List of all persons</title>
+        <style type="text/css">
+            body {
+                padding: 50px;
+            }
+            .book-table {
+                margin-top: 10px;
+            }
+            .book-table, .book-table td {
+                border: 1px solid lightgray;
+                padding: 5px;
+            }
+        </style>
+        <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div>
+            <a th:href="@{/edit}" th:method="get" href="bookEdit.html">->Add book<-</a>
+        </div>
+        <table class="book-table">
+            <thead>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Аuthor</th>
+                <th>Genre</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <script>
+            $(function () {
+                $.get('/book').done(function (books) {
+                    books.forEach(function (book) {
+                        $('tbody').append(`
+                            <tr>
+                                <td>${book.id}</id>
+                                <td>${book.name}</td>
+                                <td>${book.author}</td>
+                                <td>${book.genre}</td>
+                                <td><a href="#" class="editLnk">Edit</a></td>
+                                <td><a href="#" class="deleteLnk">Delete</div></td>
+                            </tr>
+                         `)
+                    });
+                    $( ".deleteLnk" ).click(function() {
+                        const row = $(this).closest("tr");
+                        const bookId = row.children("td:first").text().trim();
+                        $.ajax({
+                            url: '/book/' + bookId,
+                            type: 'DELETE',
+                            success: function() {
+                                row.remove();
+                            },
+                            error: function (jqXhr, textStatus, errorMessage) {
+                                alert('Error ' + errorMessage);
+                            }
+                        });
+                    });
+                })
+            });
+        </script>
+    </body>
+</html>
