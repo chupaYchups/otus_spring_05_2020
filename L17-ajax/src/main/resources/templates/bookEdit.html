@@ -7,39 +7,75 @@
             body {
                 padding: 50px;
             }
-
             label {
                 display: inline-block;
                 width: 100px;
             }
-
             .row {
                 margin-top: 10px;
             }
+            .resp-success {
+                color: green;
+            }
+            .resp-error {
+                color: red;
+            }
         </style>
+        <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <body>
-<!--        <form id="book-edit-form" th:action="@{/edit(id=${book.id})}" th:method="post" action="bookEdit.html">-->
+        <div>
+            <a href="/">->List form<-</a>
+        </div>
         <h1>Book info:</h1>
         <div class="row">
             <label for="book-name-id">Name:</label>
-            <input id="book-name-id" name="name" type="text" th:value="${book.name}" value="My book"/>
+            <input id="book-name-id" name="name" type="text"/>
         </div>
         <div class="row">
             <label for="author-name-id">Author name:</label>
-            <input id="author-name-id" name="author" type="text" th:value="${book.author}" value="My author"/>
+            <input id="author-name-id" name="author" type="text"/>
         </div>
         <div class="row">
             <label for="genre-name-id">Name:</label>
-            <input id="genre-name-id" name="genre" ype="text" th:value="${book.genre}" value="My genre"/>
+            <input id="genre-name-id" name="genre" type="text"/>
         </div>
         <div class="row">
-            <button onclick="alert('Hello mommy!')">Save</button>
+            <button id="save-button">Save</button>
         </div>
-<!--        </form>-->
-
+        <div class="responseMsg">
+        </div>
         <script>
-            alert($.url.attr('id'));
+            $.urlParam = function(name){
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                if (results==null) {
+                    return null;
+                }
+                return decodeURI(results[1]) || 0;
+            }
+            const bookId = $.urlParam('bookId');
+            $(function () {
+                if (bookId > 0) {
+                    $.get(`/book/${bookId}`).done(function (book) {
+                        $("#book-name-id").val(book.name);
+                        $("#author-name-id").val(book.author);
+                        $("#genre-name-id").val(book.genre);
+                    });
+                }
+            });
+            $("#save-button").click(function() {
+                $.post('/book' + (bookId > 0 ? `/${bookId}` : ''),
+                    { name: $("#book-name-id").val(),
+                      author: $("#author-name-id").val(),
+                      genre: $("#genre-name-id").val()
+                    },
+                    function(data){
+                        $(".responseMsg").append(`<div class="resp-success">${data}</div>`);
+                    }).
+                    fail(function(data) {
+                        $(".responseMsg").append(`<div class="resp-error">${data.responseText}</div>`);
+                    });
+            });
         </script>
     </body>
 </html>

@@ -11,7 +11,7 @@
                 margin-top: 10px;
             }
             .book-table, .book-table td {
-                border: 1px solid lightgray;
+                border: 1px solid #d3d3d3;
                 padding: 5px;
             }
         </style>
@@ -43,7 +43,7 @@
                                 <td>${book.name}</td>
                                 <td>${book.author}</td>
                                 <td>${book.genre}</td>
-                                <td><a href="#" class="editLnk">Edit</a></td>
+                                <td><a href="/edit?bookId=${book.id}" class="editLnk">Edit</a></td>
                                 <td><a href="#" class="deleteLnk">Delete</div></td>
                             </tr>
                          `)
