@@ -1,6 +1,7 @@
-package ru.chupaYchups.rest;
+package ru.chupaYchups.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.chupaYchups.dto.BookDto;
 import ru.chupaYchups.service.BookService;
@@ -11,6 +12,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BookRestController {
 
+    private static final String BOOK_UPDATED_SUCCESSFULLY = "Book updated successfully!";
+    private static final String BOOK_ADDED_SUCCESSFULLY = "Book added successfully!";
     private final BookService bookService;
 
     @GetMapping({"/book"})
@@ -30,14 +33,14 @@ public class BookRestController {
     }
 
     @PostMapping({"/book/{bookId}"})
-    public String updateBook(@PathVariable String bookId, String name, String author, String genre) {
+    public ResponseEntity<String> updateBook(@PathVariable String bookId, String name, String author, String genre) {
         bookService.updateBookById(Long.parseLong(bookId), Optional.of(name), Optional.of(author), Optional.of(genre));
-        return "Book updated successfully!!!";
+        return ResponseEntity.ok(BOOK_UPDATED_SUCCESSFULLY);
     }
 
     @PostMapping({"/book"})
-    public String addBook(String name, String author, String genre) {
+    public ResponseEntity<String> addBook(String name, String author, String genre) {
         bookService.addBook(name, author, genre);
-        return "Book added successfully!!!";
+        return ResponseEntity.ok(BOOK_ADDED_SUCCESSFULLY);
     }
 }
