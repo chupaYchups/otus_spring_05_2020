@@ -69,17 +69,4 @@ class CommentRepositoryTest {
         commentToDelete = mongoTemplate.findById(commentToDelete.getId(), Comment.class);
         assertThat(commentToDelete).isNull();
     }
-    //todo удалили же ж метод
-/*
-    @Test
-    @DisplayName("ищет комментарии к книге")
-    void testThatRepositoryCorrectlyFindCommentsByBook() {
-        Book bookWithComments = mongoTemplate.findById(COMMENT_TEST_ID_WP_GOOD, Book.class);
-        Comment testCommentFirst = testEntityManager.find(Comment.class, TEST_COMMENT_FIRST_ID);
-        Comment testCommentSecond = testEntityManager.find(Comment.class, TEST_COMMENT_SECOND_ID);
-
-        List<Comment> bookComments = commentRepository.findByBook(bookWithComments);
-
-        assertThat(bookComments).isNotEmpty().contains(testCommentFirst, testCommentSecond);
-    }*/
 }
