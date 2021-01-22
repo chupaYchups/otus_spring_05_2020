@@ -1,0 +1,18 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: none
+      database: library
+      port: 27017
+      host: localhost
+
+logging:
+  level:
+    ROOT: ERROR
+
+mongock:
+#      runner-type: "ApplicationRunner" # default
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.chupaYchups.mongock
+
