@@ -1,7 +1,6 @@
 package ru.chupaYchups.exception;
 
-//TODO перенести в репозитарий? Переопределить метод?
-public class NoSuchGenreException extends RuntimeException {
+public class NoSuchGenreException extends LibraryException {
 
     private static final String CANNOT_FIND_GENRE_WITH_ID_MSG = "Cannot find author with id: %s";
 

@@ -13,13 +13,11 @@ import ru.chupaYchups.domain.Author;
 import ru.chupaYchups.domain.Book;
 import ru.chupaYchups.domain.Genre;
 import ru.chupaYchups.dto.BookDto;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -91,7 +89,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public List<BookDto> getAllBooks() {
-        return StreamSupport.stream(bookRepository.findAll().spliterator(), false).
+        return bookRepository.findAll().stream().
                 map(new BookDtoMapper()).
                 collect(Collectors.toList());
     }

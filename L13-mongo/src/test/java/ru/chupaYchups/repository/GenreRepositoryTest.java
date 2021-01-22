@@ -88,7 +88,7 @@ class GenreRepositoryTest {
         Genre novelGenre = mongoTemplate.findById(NOVEL_GENRE_ID, Genre.class);
         Genre storyGenre = mongoTemplate.findById(STORY_GENRE_ID, Genre.class);
 
-        List<Genre> genreList = StreamSupport.stream(genreRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        List<Genre> genreList = genreRepository.findAll().stream().collect(Collectors.toList());
 
         assertThat(genreList).hasSize(2).contains(novelGenre, storyGenre);
     }

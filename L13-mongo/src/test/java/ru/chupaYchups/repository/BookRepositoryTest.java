@@ -88,7 +88,7 @@ class BookRepositoryTest {
         Book firstTestBook = mongoTemplate.findById(WAR_AND_PEACE_BOOK_ID, Book.class);
         Book secondTestBook = mongoTemplate.findById(RUSLAN_AND_LUDMILA_BOOK_ID, Book.class);
 
-        List<Book> foundBooks = StreamSupport.stream(bookRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        List<Book> foundBooks = bookRepository.findAll().stream().collect(Collectors.toList());
 
         assertThat(foundBooks).isNotEmpty().hasSize(2).containsExactly(firstTestBook, secondTestBook);
     }

@@ -1,6 +1,6 @@
 package ru.chupaYchups.exception;
 
-public class NoSuchAuthorException extends RuntimeException {
+public class NoSuchAuthorException extends LibraryException {
 
     private static final String CANNOT_FIND_AUTHOR_WITH_ID_MSG = "Cannot find author with id: %s";
 

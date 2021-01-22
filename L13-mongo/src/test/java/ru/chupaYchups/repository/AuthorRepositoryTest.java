@@ -101,7 +101,7 @@ class AuthorRepositoryTest {
         Author tolstoyAuthor = mongoTemplate.findById(TOLSTOY_AUTHOR_ID, Author.class);
         Author pushkinAuthor = mongoTemplate.findById(PUSHKIN_AUTHOR_ID, Author.class);
 
-        List<Author> authorList = StreamSupport.stream(authorRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        List<Author> authorList = authorRepository.findAll().stream().collect(Collectors.toList());
 
         assertThat(authorList).hasSize(2).contains(tolstoyAuthor, pushkinAuthor);
     }
